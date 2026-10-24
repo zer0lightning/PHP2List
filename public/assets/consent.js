@@ -42,15 +42,14 @@
     box.innerHTML = `
       <div class="pb-text">
         <b>Your privacy</b>
-        <p>PHP2List itself sets <strong>no cookies</strong> and runs <strong>no analytics or tracking scripts</strong>. Your watchlist, theme, link-notice choice and the time of your last visit (to show what changed since) are saved <strong>in this browser only</strong>, so they're still there next time. It isn't sent to the server.</p>
-        <p>The site is hosted by Cloudflare, which processes basic request data such as your IP address to deliver and protect the site. Cloudflare may also set its own security cookies, for example to tell people apart from bots.</p>
+        <p>PHP2List sets <strong>no cookies</strong> and has <strong>no tracking</strong>. Your watchlist and settings stay <strong>in this browser</strong>. Cloudflare hosts the site and may set its own security cookies.</p>
         <p class="pb-state"></p>
-        <label class="pb-leave"><input type="checkbox"> Warn me before opening an external site</label>
+        <label class="pb-leave" hidden><input type="checkbox"> Warn me before opening an external site</label>
       </div>
       <div class="pb-actions">
         <button type="button" class="btn primary" data-choice="ok">OK</button>
         <button type="button" class="btn" data-choice="nostore">Don't save my settings</button>
-        <a class="pb-link" href="/privacy">Privacy notice</a>
+        <a class="pb-link" href="/privacy">Details</a>
       </div>
       <button type="button" class="pb-close" aria-label="Close privacy notice">×</button>`;
     const st = box.querySelector(".pb-state");
@@ -58,6 +57,8 @@
     else if (state === "nostore") st.textContent = "Current setting: nothing is saved. Your watchlist still works through the page address, but won't be remembered.";
     else if (state === "ok") st.textContent = "Current setting: your settings and last-visit time are saved in this browser.";
     else st.hidden = true;
+    if (!fromLink) st.hidden = true;                      // first visit: keep the notice short
+    box.querySelector(".pb-leave").hidden = !fromLink;    // the link-notice option lives in Privacy choices
     if (state === "nostore") box.querySelector('[data-choice="ok"]').textContent = "Allow saving";
     const leave = box.querySelector(".pb-leave input");
     leave.checked = ls.get(LEAVE_KEY) !== "off";

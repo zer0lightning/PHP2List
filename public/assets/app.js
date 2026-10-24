@@ -161,10 +161,21 @@
     return html;
   }
   narrow.addEventListener("change", () => { if (loaded) renderWatch(scoped()); });
+  // The watchlist box is only shown once there is a watchlist, or after "Create watchlist".
+  // When it appears because a row was starred, the star handler keeps that row in place on screen.
+  let watchOpen = false;
+  function showWatchSection(){
+    const sec = $("watchSection"), want = state.vendors.length > 0 || watchOpen;
+    document.body.classList.toggle("no-watch", !want);
+    if (sec.hidden !== want) return;
+    sec.hidden = !want;
+  }
   function setWatchChrome(){
     const has = state.vendors.length > 0, card = $("watchCard");
+    showWatchSection();
     card.classList.toggle("has-items", has);
-    $("vpaste").hidden = has; $("vshare").hidden = !has; $("vmore").hidden = !has;
+    $("vpaste").hidden = has; $("vshare").hidden = !has; $("vfeed").hidden = !has; $("vmore").hidden = !has;
+    $("vclose").hidden = has;
     if (!has) $("vmore").open = false;
     $("vhelpToggle").hidden = !has;
     $("vhelp").hidden = has && $("vhelpToggle").getAttribute("aria-expanded") !== "true";
@@ -207,6 +218,7 @@
   }
   function removeVendor(i){
     const before = state.vendors.slice(), name = state.vendors[i];
+    watchOpen = true;                 // removing the last item keeps the box open, so you can add more
     state.vendors.splice(i, 1); vendorsChanged();
     toast(`Removed “${entryLabel(name)}” from your watchlist`, { action: { label: "Undo", fn: () => { state.vendors = before; vendorsChanged(); } } });
   }
@@ -311,7 +323,6 @@
     const sel = $("sortSel"), want = state.sortKey + ":1";
     if ([...sel.options].some(o => o.value === want)) sel.value = want;
     const col = COLS.find(c => c.key === state.sortKey);
-    $("sortinfo").textContent = `Sorted by ${col.label}${(state.sortKey === "s1" || state.sortKey === "s2") ? " (most severe first)" : ""}${state.sortDir === -1 ? ", reversed" : ""}`;
   }
 
   function renderShared(){
@@ -372,11 +383,14 @@
     $("dist").innerHTML = shown.map(s => `<span class="${bg(s)}" data-w="${(c[s]||0)/total*100}"></span>`).join("");
     // Widths are applied through the DOM (allowed by the strict CSP) rather than inline style attributes.
     for (const el of document.querySelectorAll("#stats [data-w], #dist [data-w]")) el.style.width = Math.max(0, Math.min(100, Number(el.dataset.w) || 0)) + "%";
-    $("chips").innerHTML = shown.map(s =>
-      `<button type="button" class="chip" data-status="${esc(s)}" aria-pressed="${state.statuses.has(s)}"><span class="st ${cls(s)}">${esc(s)}</span><b>${c[s]||0}</b></button>`
-    ).join("") + (state.statuses.size ? `<button type="button" class="chip clear" data-clear="1">Clear</button>` : "");
+    // Toolbar shows only the active status filter(s), so they stay visible while scrolling.
+    $("chips").innerHTML = [...state.statuses].map(s =>
+      `<button type="button" class="chip on" data-status="${esc(s)}" aria-label="Remove filter ${esc(s)}"><span class="chip-k">Status</span><span class="st ${cls(s)}">${esc(s)}</span><span aria-hidden="true">✕</span></button>`
+    ).join("") + (state.statuses.size > 1 ? `<button type="button" class="chip clear" data-clear="1">Clear all</button>` : "");
+    $("filters").classList.toggle("no-chips", !state.statuses.size);
   }
 
+  // A–Z supplier index (shown on desktop and tablet; hidden on phones, where search is quicker).
   function renderLetters(base){
     const present = new Set(base.map(r => r._initial));
     if (state.letter && !present.has(state.letter)) state.letter = "";
@@ -384,6 +398,7 @@
     $("letters").innerHTML = `<button type="button" data-letter="" aria-pressed="${!state.letter}">All</button>` +
       L.map(l => `<button type="button" data-letter="${l}" aria-pressed="${state.letter===l}" ${present.has(l)?"":"disabled"}>${l}</button>`).join("");
   }
+
 
   // First visit shows only the first part of the full list so the page is quick to scroll past.
   // Once the visitor clicks "Show all" or narrows the list in any way, the full list is shown
@@ -471,7 +486,7 @@
     if (!loaded){ box.hidden = true; return; }
     box.hidden = false;
     const links = `<span class="cs-links"><a href="/changes">All changes</a><a href="/charts">Patch progress</a>
-      <a class="cs-rss" href="/feed.xml" title="Follow changes in a feed reader (RSS)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 11a8 8 0 0 1 8 8M5 5a14 14 0 0 1 14 14"/><circle cx="6" cy="18" r="1.5"/></svg>RSS</a></span>`;
+      ${state.vendors.length || watchOpen ? "" : `<button type="button" class="btn sm cs-create" data-create-watch>＋ Create watchlist</button>`}</span>`;
     const icon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`;
     if (!changesLoaded){ box.innerHTML = `<span class="cs-main">${icon}<span class="cs-label">Recent changes</span></span>${links}`; return; }
     const inWatch = state.vendors.length && view === "watch";
@@ -484,7 +499,17 @@
     const quiet = !n24 ? `<span class="cs-quiet">${parts.length ? "" : "None in the last 24 hours"}${latestChange ? `${parts.length ? "" : " · "}last change ${ago(latestChange)}` : ""}</span>` : "";
     box.innerHTML = `<span class="cs-main">${icon}<span class="cs-label">${inWatch ? "Changes in your watchlist" : "Recent changes"}</span>${parts.join("")}${quiet}</span>${links}`;
   }
+  function openWatch(){
+    watchOpen = true; render();
+    $("watchSection").scrollIntoView({ block: "start", behavior: "smooth" });
+    $("vq").focus({ preventScroll: true });
+  }
+  $("vclose").addEventListener("click", () => { watchOpen = false; render(); });
+  $("vfeed").addEventListener("click", () => {
+    location.href = "/subscribe?" + state.vendors.map(v => "v=" + encodeURIComponent(v)).join("&");
+  });
   $("changesStrip").addEventListener("click", e => {
+    if (e.target.closest("[data-create-watch]")) { openWatch(); return; }
     const b = e.target.closest("[data-changed]"); if (!b || b.disabled) return;
     state.changed = state.changed === b.dataset.changed ? "" : b.dataset.changed;
     showAll = true; render();
@@ -546,6 +571,9 @@
     const pin = e.target.closest("[data-pin]");
     if (pin){
       const r = lastRows[+pin.dataset.pin]; if (!r) return;
+      // Keep the clicked row where it is on screen, even if the watchlist box appears above it.
+      const idx = pin.dataset.pin, y0 = pin.getBoundingClientRect().top;
+      const keepPlace = () => { const nb = $("body").querySelector(`[data-pin="${idx}"]`); if (nb) scrollBy({ top: nb.getBoundingClientRect().top - y0, behavior: "instant" }); };
       const v = productEntry(r), wasEmpty = !state.vendors.length;
       if (hasEntry(v)){
         const before = state.vendors.slice();
@@ -553,7 +581,8 @@
         toast(`Stopped watching ${r.product}`, { action: { label: "Undo", fn: () => { state.vendors = before; vendorsChanged(); } } });
       } else {
         if (wasEmpty) view = "all";       // keep browsing the full list while starring
-        addVendors([v]);
+        addVendors([v]); keepPlace();
+        requestAnimationFrame(() => requestAnimationFrame(keepPlace));   // again after "Read more" links settle
         toast(`Watching ${r.product} (${r.supplier})`, view === "all"
           ? { action: { label: "Show watchlist", fn: () => { view = "watch"; render(); $("results").scrollIntoView(); } } } : {});
       }
@@ -817,10 +846,6 @@
     $("vmore").open = false;
     if (b.dataset.more === "paste") $("vpaste").click();
     if (b.dataset.more === "clear") clearAll();
-    if (b.dataset.more === "feed"){
-      const url = `${location.origin}/feed.xml?` + state.vendors.map(v => "v=" + encodeURIComponent(v)).join("&");
-      copyText(url).then(ok => toast(ok ? "Feed link copied. Paste it into your feed reader. The link contains your watchlist." : "Couldn't copy the feed link. See the Changes page.", ok ? {} : { warn: true }));
-    }
   });
   document.addEventListener("click", e => { if (!e.target.closest("#vmore")) $("vmore").open = false; });
   document.addEventListener("keydown", e => { if (e.key === "Escape" && $("vmore").open){ $("vmore").open = false; $("vmore").querySelector("summary").focus(); } });
@@ -959,9 +984,8 @@
   // When the list was updated by NCSC-NL, and when this site last checked it.
   function showFreshness(){
     const checked = fetchedAt ? `checked ${ago(fetchedAt)}` : "";
-    $("updated").textContent = [listUpdated && `Software list last status update: ${listUpdated}`, checked].filter(Boolean).join(" · ");
-    $("foot-updated").textContent = [listUpdated && `List updated ${listUpdated}`, checked].filter(Boolean).join(" · ");
-    if (fetchedAt) $("foot-updated").title = `This site last fetched the list ${new Date(fetchedAt).toLocaleString()}`;
+    $("updated").textContent = [listUpdated && `List updated ${listUpdated}`, checked].filter(Boolean).join(" · ");
+    if (fetchedAt) $("updated").title = `NCSC-NL's last status update: ${listUpdated || "unknown"}. This site last fetched the list ${new Date(fetchedAt).toLocaleString()}.`;
   }
   setInterval(() => { if (loaded) showFreshness(); }, 60e3);
 

@@ -270,13 +270,8 @@ CHARTS = """
 <div id="chartsBody">
   <p class="loading" id="chartsLoading"><span class="spinner"></span>Loading chart data…</p>
 
+  <p class="charts-asof" id="asOf"></p>
   <section class="kpis" id="kpis" aria-label="Current totals"></section>
-
-  <section class="chart-card" aria-labelledby="h-now">
-    <div class="chart-head"><div><h2 id="h-now">Where things stand now</h2><p id="asOf"></p></div></div>
-    <div class="breakdown" id="breakdown" role="img" aria-label="Share of listed products by status"></div>
-    <ul class="legend-row" id="breakdownLegend"></ul>
-  </section>
 
   <section class="chart-card" aria-labelledby="h-progress">
     <div class="chart-head"><div><h2 id="h-progress">Fixed vs still open since disclosure</h2>
@@ -450,25 +445,25 @@ ABOUT_LIST = f"""
 
 CHANGES = """
 <div class="chg-page">
-<p class="chg-intro">Every status change in NCSC-NL's list over the last 30 days, newest first, rebuilt from the list's own changelog. Select a product to see its current entry in the full list.</p>
 <div class="chg-controls">
   <div class="seg" id="chgPeriod" role="group" aria-label="Period">
     <button type="button" data-period="1" aria-pressed="false">24 hours</button><button type="button" data-period="7" aria-pressed="true">7 days</button><button type="button" data-period="30" aria-pressed="false">30 days</button>
   </div>
   <select id="chgKind" aria-label="Type of change">
-    <option value="all">All changes</option>
+    <option value="changes" selected>Status changes</option>
     <option value="fixed">Newly fixed or not vulnerable</option>
     <option value="vuln">Newly vulnerable or workaround</option>
     <option value="added">Added to the list</option>
+    <option value="all">Everything, including additions</option>
   </select>
   <label class="chk" id="chgWatchWrap" hidden><input type="checkbox" id="chgWatch"> Only my watchlist <span id="chgWatchN"></span></label>
-</div>
-<div class="feedbox">
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 11a8 8 0 0 1 8 8M5 5a14 14 0 0 1 14 14"/><circle cx="6" cy="18" r="1.5"/></svg>
-  <span class="fb-text"><b>Follow changes in a feed reader</b> (RSS/Atom), with no account or email needed.</span>
-  <span class="fb-actions"><button type="button" class="btn sm" id="feedAll">Copy feed link</button><button type="button" class="btn sm" id="feedWatch" hidden>Copy feed for my watchlist</button></span>
+  <span class="chg-feed">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 11a8 8 0 0 1 8 8M5 5a14 14 0 0 1 14 14"/><circle cx="6" cy="18" r="1.5"/></svg>
+    <button type="button" class="linkish" id="feedAll">Copy feed link</button>
+    <button type="button" class="linkish" id="feedWatch" hidden title="Your watchlist entries become part of the feed address">Copy feed for my watchlist</button>
+    <a href="/subscribe">How to subscribe</a>
+  </span>
   <input id="feedUrl" class="feed-url" type="text" readonly aria-label="Feed link" spellcheck="false" hidden>
-  <p class="fb-note"><a href="/subscribe">How to subscribe</a>. A watchlist feed puts your watchlist entries in the feed address, so your feed reader sends them to this site (see <a href="/privacy">Privacy</a>).</p>
 </div>
 <p class="chg-count" id="chgCount">Loading recent changes…</p>
 <div id="chgList" aria-live="polite"><div class="loading"><div class="spinner"></div>Loading…</div></div>
@@ -572,7 +567,7 @@ open(f"{pub}/charts.html", "w").write(page("charts", "Patch progress",
 print("wrote charts")
 open(f"{pub}/changes.html", "w").write(page("changes", "Changes",
     "Recent status changes in the NCSC-NL php2shell software list, newest first, with a feed for your watchlist. Unofficial viewer.",
-    "Recent changes", "What changed in the list: products that were added, fixed, or found vulnerable.",
+    "Recent changes", "Every status change in NCSC-NL's list over the last 30 days, newest first. Select a product to see its current entry.",
     CHANGES, wide=True, script="/assets/changes.js"))
 print("wrote changes")
 open(f"{pub}/api-docs.html", "w").write(page("api-docs", "API and feeds",

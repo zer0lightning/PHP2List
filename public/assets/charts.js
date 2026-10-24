@@ -62,21 +62,6 @@
       if (k.d){ const dd = document.createElement("div"); dd.className = "kpi-d"; dd.textContent = k.d; d.append(dd); }
       box.append(d);
     }
-    // 100% bar of the current breakdown
-    const bar = $("breakdown"); bar.textContent = "";
-    const legend = $("breakdownLegend"); legend.textContent = "";
-    for (const s of STATUS){
-      const n = c[s] || 0; if (!n) continue;
-      const seg = document.createElement("span");
-      seg.style.width = (n / total * 100) + "%"; seg.style.background = COLOR[s];
-      seg.title = `${LABEL[s]}: ${fmtN(n)} (${pct(n, total)}%)`;
-      bar.append(seg);
-      const li = document.createElement("li");
-      const sw = document.createElement("i"); sw.style.background = COLOR[s];
-      const t = document.createElement("span"); t.textContent = `${LABEL[s]} `;
-      const b = document.createElement("b"); b.textContent = `${fmtN(n)} · ${pct(n, total)}%`;
-      li.append(sw, t, b); legend.append(li);
-    }
   }
 
   // ---------------- shared time axis ----------------
@@ -299,7 +284,7 @@
         tl = { points, disclosure: s(timeline.disclosure, 40), firstEntry: s(timeline.firstEntry, 40), stepHours: num(timeline.stepHours) || 1 };
         list = { listUpdated: s(list.listUpdated, 100), official: list.official, sourceLabel: s(list.sourceLabel, 120) };
         $("chartsLoading").hidden = true;
-        $("asOf").textContent = (list.listUpdated ? `Software list last status update: ${list.listUpdated}` : "") +
+        $("asOf").textContent = (list.listUpdated ? `List updated ${list.listUpdated}` : "") +
           (list.official === false ? ` · Loaded from a mirror (${list.sourceLabel || "unknown"}), not the official NCSC-NL repository.` : "");
         $("stepNote").textContent = `Timeline points every ${tl.stepHours === 1 ? "hour" : tl.stepHours + " hours"}, shown in your local time.`;
         renderAll();

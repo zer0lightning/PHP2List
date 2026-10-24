@@ -29,14 +29,14 @@ The data refreshes itself (from the prebuilt KV data, or directly from the sourc
 
 ## Features
 
-- **Watchlist** with three kinds of entry:
+- **Watchlist** (hidden until used: **＋ Create watchlist** in the Recent changes bar, or ☆ Watch on any row, opens it; once you have one it shows at the top with **RSS feed** and **Share** buttons) with three kinds of entry:
   - **Supplier:** an exact supplier, e.g. *WordPress project* only (not "bbPress community / WordPress project").
   - **Product:** one exact product, e.g. *WordPress* from *WordPress project*.
   - **Keyword:** a whole word anywhere in supplier or product names, e.g. *wordpress* matches 15 products.
 
   Add them by typing (suggestions grouped into Keyword / Suppliers / Products), by selecting **☆ Watch** on any row, or by pasting a list (`Supplier :: Product` for a product, `supplier: Name` for a supplier, anything else is a keyword). A **Watchlist / All products** switch lets you browse everything while starring rows. Items not found in the list are called out. Saved in the visitor's browser only; older saved lists of plain names keep working as keywords.
 - **Export menu:** products as CSV (with a "Matched vendor" column) or JSON, and a per-vendor summary CSV with status counts. Exports reflect all active filters and are generated in the browser.
-- Search, status filters per CVE, A–Z supplier index, sortable columns, light/dark toggle.
+- Search, status filters per CVE (click a status card; the active filter shows as a removable chip in the toolbar), A–Z supplier index (desktop and tablet), sortable columns, a "What the statuses mean" key above the table, light/dark toggle.
 - **Share / bookmark links:** the **Share** button in the watchlist creates a link containing the vendor list (optionally with the current search and filters), with Copy link and the device share sheet. Opening someone else's link shows their list in a "shared vendor list" banner without overwriting your own saved watchlist; you can **Save as my watchlist** or go **Back to my watchlist**. The list lives after `#` in the address, which browsers never send to the server.
 - Consistent notices (info / warning / error), confirmation toasts with Undo, and a warning when GitHub is unreachable and a saved copy is shown.
 - Clearly marked as **unofficial** and not affiliated with NCSC-NL on every page and in exports.

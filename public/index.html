@@ -10,10 +10,10 @@
 <link rel="alternate" type="application/atom+xml" title="PHP2List: status changes" href="/feed.xml">
 <script src="/assets/theme-init.js?v=2f438d6943"></script>
 <script src="/assets/theme.js?v=80f7b21ef5" defer></script>
-<script src="/assets/consent.js?v=02432779ae" defer></script>
+<script src="/assets/consent.js?v=d0443d5291" defer></script>
 <script src="/assets/leave.js?v=9bdeb52dd6" defer></script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23233a6b'/%3E%3Cpath d='M12 10l-6 6 6 6M20 10l6 6-6 6' stroke='%23ffb547' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="/assets/site.css?v=a8118abb6e">
+<link rel="stylesheet" href="/assets/site.css?v=c951eb3f0b">
 </head>
 <body>
 <a class="skip" href="#results">Skip to results</a>
@@ -24,14 +24,12 @@
       <a class="brand" href="/" aria-label="PHP2List home">
         <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="rgba(255,255,255,.1)"/><path d="M12 10l-6 6 6 6M20 10l6 6-6 6" stroke="#ffb547" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span class="brand-text"><span class="brand-name">PHP2<span>List</span></span><span class="byline">by zer0lightning</span></span>
-        <span class="brand-tag">PHP2Shell Software List</span>
       </a>
       <nav class="nav" aria-label="Site">
         <a href="/" aria-current="page">Software list</a>
         <a href="/changes">Changes</a>
         <a href="/what-is-php2shell">What is PHP2Shell</a>
         <a href="/charts">Patch progress</a>
-        <a href="https://github.com/NCSC-NL/php2shell" target="_blank" rel="noopener noreferrer" title="External site: NCSC-NL's source list on GitHub">Source list<svg width="16" height="16" class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span class="sr-only"> (external site)</span></a>
         <a href="/about">About</a>
       </nav>
       <!-- Source repository (placeholder until the repo is published): change the href here and REPO_URL in tools/build_pages.py -->
@@ -50,22 +48,20 @@
           <a href="/what-is-php2shell">What is PHP2Shell?</a>
           <a href="https://github.com/NCSC-NL/php2shell" target="_blank" rel="noopener noreferrer">Source list by NCSC-NL<svg width="16" height="16" class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span class="sr-only"> (external site)</span></a>
         </div>
+        <p class="not-official">Unofficial site, not affiliated with NCSC-NL, php2shell.com, the PHP2Shell researchers or the PHP project. <a href="/disclaimer#not-ncsc">Read more</a></p>
       </div>
       <aside class="callout" aria-label="Fixed PHP releases">
         <b>Fixed upstream PHP releases</b>
         <p>PHP <span class="vers">8.5.12</span> · <span class="vers">8.4.27</span> · <span class="vers">8.3.36</span> · <span class="vers">8.2.35</span>, or vendor-backported packages. Products that bundle PHP need their own vendor update.</p>
         <p class="callout-links"><a href="https://www.php.net/archive/2026.php#2026-10-21-5" target="_blank" rel="noopener noreferrer">PHP security advisory<svg width="16" height="16" class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span class="sr-only"> (external site: php.net)</span></a><a href="https://www.php.net/downloads.php" target="_blank" rel="noopener noreferrer">Download PHP<svg width="16" height="16" class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span class="sr-only"> (external site: php.net)</span></a></p>
-        <div class="upd" id="updated">Loading list status…</div>
-        <div class="upd src-note" id="srcNote" hidden></div>
       </aside>
     </div>
-    <p class="not-official"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg><span><b>Independent site.</b> PHP2List is not NCSC-NL or php2shell.com, and is not affiliated with or endorsed by NCSC-NL, the PHP2Shell researchers or the PHP project. It only displays NCSC-NL's public list. <a href="/disclaimer#not-ncsc">Read more</a></span></p>
   </div>
 </header>
 
 <div class="container archived-wrap" id="archived" hidden></div>
 
-<section class="watch container" aria-labelledby="watch-h">
+<section class="watch container" id="watchSection" aria-labelledby="watch-h" hidden>
   <div class="watch-card" id="watchCard">
     <div class="watch-head">
       <div class="watch-title">
@@ -76,14 +72,15 @@
         <div class="seg" id="vview" role="group" aria-label="Show" hidden>
           <button type="button" data-view="watch" id="vviewWatch" aria-pressed="true">Watchlist</button><button type="button" data-view="all" id="vviewAll" aria-pressed="false">All products</button>
         </div>
-        <button class="btn" id="vpaste" type="button"><svg width="16" height="16" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="8" y="3" width="8" height="4" rx="1"/><path d="M8 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/></svg>Paste a list</button>
-        <button class="btn" id="vshare" type="button" hidden><svg width="16" height="16" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7.1 0l3-3a5 5 0 0 0-7.1-7.1l-1.2 1.2"/><path d="M14 10a5 5 0 0 0-7.1 0l-3 3a5 5 0 0 0 7.1 7.1l1.2-1.2"/></svg>Share</button>
+        <button class="btn" id="vpaste" type="button"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="8" y="3" width="8" height="4" rx="1"/><path d="M8 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/></svg>Paste a list</button>
+        <button class="linkish vclose" id="vclose" type="button" hidden>Close</button>
+        <button class="btn" id="vfeed" type="button" hidden title="Follow changes to this watchlist in a feed reader"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 11a8 8 0 0 1 8 8M5 5a14 14 0 0 1 14 14"/><circle cx="6" cy="18" r="1.5"/></svg>RSS feed</button>
+        <button class="btn" id="vshare" type="button" hidden><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7.1 0l3-3a5 5 0 0 0-7.1-7.1l-1.2 1.2"/><path d="M14 10a5 5 0 0 0-7.1 0l-3 3a5 5 0 0 0 7.1 7.1l1.2-1.2"/></svg>Share</button>
         <details class="more" id="vmore" hidden>
-          <summary class="btn" aria-label="More watchlist actions" title="More actions"><svg width="16" height="16" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></summary>
+          <summary class="btn" aria-label="More watchlist actions" title="More actions"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></summary>
           <div class="menu" role="menu">
-            <button type="button" role="menuitem" data-more="paste"><svg width="16" height="16" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="8" y="3" width="8" height="4" rx="1"/><path d="M8 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/></svg>Paste a list</button>
-            <button type="button" role="menuitem" data-more="feed"><svg width="16" height="16" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 11a8 8 0 0 1 8 8M5 5a14 14 0 0 1 14 14"/><circle cx="6" cy="18" r="1.5"/></svg>Copy feed link for this watchlist</button>
-            <button type="button" role="menuitem" data-more="clear" class="danger"><svg width="16" height="16" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>Clear all</button>
+            <button type="button" role="menuitem" data-more="paste"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="8" y="3" width="8" height="4" rx="1"/><path d="M8 5H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/></svg>Paste a list</button>
+            <button type="button" role="menuitem" data-more="clear" class="danger"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>Clear all</button>
           </div>
         </details>
       </div>
@@ -133,7 +130,7 @@
     <p class="fineprint">The vendor list is stored in the part of the link after <code>#</code>, which browsers don't send to the server. It is visible to anyone you share the link with. Tip: press <kbd id="bmKey">Ctrl+D</kbd> to bookmark this page.</p>
     <div class="dlg-actions">
       <button class="btn" id="shareNative" type="button" hidden>
-        <svg width="16" height="16" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/></svg>Share…
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/></svg>Share…
       </button>
       <button class="btn" value="close" type="submit">Done</button>
     </div>
@@ -149,7 +146,7 @@
 <div class="toolbar">
   <div class="container toolbar-inner">
     <label class="search">
-      <svg width="16" height="16" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
       <input id="q" type="search" placeholder="Search supplier, product, version or notes — e.g. fortinet, wordpress, 8.3.36" autocomplete="off" aria-label="Search the software list">
       <kbd>/</kbd>
     </label>
@@ -161,7 +158,7 @@
     <button class="btn" id="toggleNotes" type="button" aria-pressed="false">Expand notes</button>
     <details class="export" id="export">
       <summary class="btn">
-        <svg width="16" height="16" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 21h16"/></svg>Export ▾
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0l-5-5m5 5l5-5M4 21h16"/></svg>Export ▾
       </summary>
       <div class="menu" role="menu">
         <button type="button" role="menuitem" data-export="csv"><b>Products</b><span>CSV · opens in Excel</span></button>
@@ -170,9 +167,8 @@
         <p class="hint" id="exportHint">Includes every product matching your filters, plus source and date details at the top.</p>
       </div>
     </details>
-    <div class="filters">
-      <div id="chips" class="contents" role="group" aria-label="Filter by status"></div>
-      <span class="sep" aria-hidden="true"></span>
+    <div class="filters no-chips" id="filters">
+      <div id="chips" class="contents" role="group" aria-label="Active status filter"></div>
       <div class="letters" id="letters" role="group" aria-label="Filter by supplier initial"></div>
     </div>
   </div>
@@ -181,7 +177,20 @@
 <main class="container" id="results">
   <div id="stale" hidden></div>
   <div id="single" hidden></div>
-  <div class="meta"><span id="count">Loading…</span><span id="sortinfo"></span>
+  <div class="meta"><span class="meta-left"><span id="count">Loading…</span><span id="updated" class="list-meta"></span><span id="srcNote" class="src-note" hidden></span></span>
+    <details class="status-key" id="statusKey">
+      <summary>What the statuses mean</summary>
+      <div class="sk-body">
+        <ul class="legend">
+          <li><span class="st st-Vulnerable">Vulnerable</span> Confirmed vulnerable in the stated scope.</li>
+          <li><span class="st st-Workaround">Workaround</span> Vulnerable; a mitigation is available.</li>
+          <li><span class="st st-Investigation">Investigation</span> May be affected; being assessed.</li>
+          <li><span class="st st-Fix">Fix</span> The listed version contains a fix.</li>
+          <li><span class="st st-Notvuln">Not vuln</span> Confirmed not vulnerable.</li>
+        </ul>
+        <p>The Version column goes with the status: the known vulnerable versions, or the version that introduced the fix.</p>
+      </div>
+    </details>
     <label class="sort-mobile">Sort by
       <select id="sortSel">
         <option value="supplier:1">Supplier (A–Z)</option>
@@ -201,43 +210,23 @@
 
 <footer class="site-footer">
   <div class="container">
-    <div class="foot-grid">
-      <div>
-        <h2>About PHP2List</h2>
-        <p>A searchable view of the software inventory published by NCSC-NL and contributors in the <a href="https://github.com/NCSC-NL/php2shell" target="_blank" rel="noopener noreferrer">php2shell repository</a>, licensed under EUPL-1.2. The list refreshes automatically from GitHub.</p>
-        <p>The vulnerabilities were found by researchers at Wiz Research, OpenAI and Calif. Read the full story at <a href="https://www.php2shell.com/" target="_blank" rel="noopener noreferrer">php2shell.com</a> and see our <a href="/acknowledgements">acknowledgements</a>.</p>
-        <p>Accuracy is not guaranteed; use at your own risk. No support is offered; list corrections go to <a href="https://github.com/NCSC-NL/php2shell#contributions-welcome" target="_blank" rel="noopener noreferrer">NCSC-NL</a>. See the <a href="/disclaimer">disclaimer</a>.</p>
-      </div>
-      <div>
-        <h2>Status labels</h2>
-        <ul class="legend">
-          <li><span class="st st-Investigation">Investigation</span> May be affected; being assessed.</li>
-          <li><span class="st st-Vulnerable">Vulnerable</span> Confirmed vulnerable in the stated scope.</li>
-          <li><span class="st st-Fix">Fix</span> The listed version contains a fix.</li>
-          <li><span class="st st-Workaround">Workaround</span> Vulnerable; mitigation available.</li>
-          <li><span class="st st-Notvuln">Not vuln</span> Confirmed not vulnerable.</li>
-        </ul>
-        <p>The Version column relates to the status: known vulnerable versions, or the version that introduced the fix.</p>
-      </div>
-      <div>
-        <h2>Resources</h2>
-        <ul>
-          <li><a href="/what-is-php2shell">What is PHP2Shell (summary)</a></li>
-          <li><a href="https://www.php2shell.com/" target="_blank" rel="noopener noreferrer">php2shell.com</a></li>
-          <li><a href="https://github.com/NCSC-NL/php2shell/tree/main/software" target="_blank" rel="noopener noreferrer">NCSC-NL software list</a></li>
-          <li><a href="https://github.com/NCSC-NL/php2shell/blob/main/software/changelog_software_list.md" target="_blank" rel="noopener noreferrer">Software list changelog</a></li>
-          <li><a href="https://github.com/NCSC-NL/php2shell/tree/main/detection_mitigation" target="_blank" rel="noopener noreferrer">Detection &amp; mitigation</a></li>
-          <li><a href="https://www.php.net/archive/2026.php#2026-10-21-5" target="_blank" rel="noopener noreferrer">PHP security advisory</a></li>
-          <li><a href="https://cert.europa.eu/publications/security-advisories/2026-018/" target="_blank" rel="noopener noreferrer">CERT-EU Security Advisory 2026-018</a></li>
-          <li><a href="https://github.com/enisaeu/CNW/blob/main/advisories/2026/CNW-2026-04_php.md" target="_blank" rel="noopener noreferrer">EU CSIRT advisories (ENISA)</a></li>
-          <li><a href="https://github.com/NCSC-NL/php2shell#contributions-welcome" target="_blank" rel="noopener noreferrer">Contribute a correction</a></li>
-        </ul>
-      </div>
+    <div class="foot-res">
+      <h2>Official sources and advisories</h2>
+      <ul>
+        <li><a href="https://www.php2shell.com/" target="_blank" rel="noopener noreferrer">php2shell.com</a></li>
+        <li><a href="https://github.com/NCSC-NL/php2shell/tree/main/software" target="_blank" rel="noopener noreferrer">NCSC-NL software list</a></li>
+        <li><a href="https://github.com/NCSC-NL/php2shell/blob/main/software/changelog_software_list.md" target="_blank" rel="noopener noreferrer">List changelog</a></li>
+        <li><a href="https://github.com/NCSC-NL/php2shell/tree/main/detection_mitigation" target="_blank" rel="noopener noreferrer">Detection &amp; mitigation</a></li>
+        <li><a href="https://www.php.net/archive/2026.php#2026-10-21-5" target="_blank" rel="noopener noreferrer">PHP security advisory</a></li>
+        <li><a href="https://cert.europa.eu/publications/security-advisories/2026-018/" target="_blank" rel="noopener noreferrer">CERT-EU 2026-018</a></li>
+        <li><a href="https://github.com/enisaeu/CNW/blob/main/advisories/2026/CNW-2026-04_php.md" target="_blank" rel="noopener noreferrer">ENISA advisory</a></li>
+        <li><a href="https://github.com/NCSC-NL/php2shell#contributions-welcome" target="_blank" rel="noopener noreferrer">Contribute a correction</a></li>
+      </ul>
     </div>
     <div class="foot-bottom">
       <div class="foot-meta">
-        <p class="foot-statement">PHP2List is an unofficial site, not affiliated with NCSC-NL or php2shell.com.</p>
-        <p>Data © NCSC-NL and contributors <span class="dot">·</span> <span class="nw">EUPL-1.2</span> <span class="dot">·</span> <span class="tlp">TLP:CLEAR</span><span id="foot-updated"></span></p>
+        <p class="foot-statement">PHP2List is an unofficial site, not affiliated with NCSC-NL or php2shell.com. Accuracy is not guaranteed; use at your own risk.</p>
+        <p>Data © NCSC-NL and contributors <span class="dot">·</span> <span class="nw">EUPL-1.2</span> <span class="dot">·</span> <span class="tlp">TLP:CLEAR</span></p>
         <p>Site © 2026 zer0lightning <span class="dot">·</span> <a href="https://github.com/zer0lightning/PHP2List" target="_blank" rel="noopener noreferrer">Source code on GitHub</a> <span class="dot">·</span> <span class="nw">MIT licence</span></p>
       </div>
       <nav class="foot-links" aria-label="Footer">
@@ -264,9 +253,9 @@
 <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
 
 <button class="to-top" id="toTop" type="button" aria-label="Back to top">
-  <svg width="16" height="16" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg>
 </button>
 
-<script src="/assets/app.js?v=2a6e0674ee" defer></script>
+<script src="/assets/app.js?v=49307f110c" defer></script>
 </body>
 </html>

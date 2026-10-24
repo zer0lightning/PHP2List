@@ -10,10 +10,10 @@
 <link rel="alternate" type="application/atom+xml" title="PHP2List: status changes" href="/feed.xml">
 <script src="/assets/theme-init.js?v=2f438d6943"></script>
 <script src="/assets/theme.js?v=80f7b21ef5" defer></script>
-<script src="/assets/consent.js?v=02432779ae" defer></script>
+<script src="/assets/consent.js?v=d0443d5291" defer></script>
 <script src="/assets/leave.js?v=9bdeb52dd6" defer></script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23233a6b'/%3E%3Cpath d='M12 10l-6 6 6 6M20 10l6 6-6 6' stroke='%23ffb547' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="/assets/site.css?v=a8118abb6e">
+<link rel="stylesheet" href="/assets/site.css?v=c951eb3f0b">
 </head>
 <body>
 <a class="skip" href="#content">Skip to content</a>
@@ -23,14 +23,12 @@
       <a class="brand" href="/" aria-label="PHP2List home">
         <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="rgba(255,255,255,.1)"/><path d="M12 10l-6 6 6 6M20 10l6 6-6 6" stroke="#ffb547" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span class="brand-text"><span class="brand-name">PHP2<span>List</span></span><span class="byline">by zer0lightning</span></span>
-        <span class="brand-tag">PHP2Shell Software List</span>
       </a>
       <nav class="nav" aria-label="Site">
         <a href="/">Software list</a>
         <a href="/changes">Changes</a>
         <a href="/what-is-php2shell">What is PHP2Shell</a>
         <a href="/charts">Patch progress</a>
-        <a href="https://github.com/NCSC-NL/php2shell" target="_blank" rel="noopener noreferrer" title="External site: NCSC-NL's source list on GitHub">Source list<svg width="16" height="16" class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span class="sr-only"> (external site)</span></a>
         <a href="/about">About</a>
       </nav>
       <!-- Source repository (placeholder until the repo is published): change the href here and REPO_URL in tools/build_pages.py -->
@@ -113,42 +111,22 @@
 </main>
 <footer class="site-footer">
   <div class="container">
-    <div class="foot-grid">
-      <div>
-        <h2>About PHP2List</h2>
-        <p>A searchable view of the software inventory published by NCSC-NL and contributors in the <a href="https://github.com/NCSC-NL/php2shell" target="_blank" rel="noopener noreferrer">php2shell repository</a>, licensed under EUPL-1.2. The list refreshes automatically from GitHub.</p>
-        <p>The vulnerabilities were found by researchers at Wiz Research, OpenAI and Calif. Read the full story at <a href="https://www.php2shell.com/" target="_blank" rel="noopener noreferrer">php2shell.com</a> and see our <a href="/acknowledgements" aria-current="page">acknowledgements</a>.</p>
-        <p>Accuracy is not guaranteed; use at your own risk. No support is offered; list corrections go to <a href="https://github.com/NCSC-NL/php2shell#contributions-welcome" target="_blank" rel="noopener noreferrer">NCSC-NL</a>. See the <a href="/disclaimer">disclaimer</a>.</p>
-      </div>
-      <div>
-        <h2>Status labels</h2>
-        <ul class="legend">
-          <li><span class="st st-Investigation">Investigation</span> May be affected; being assessed.</li>
-          <li><span class="st st-Vulnerable">Vulnerable</span> Confirmed vulnerable in the stated scope.</li>
-          <li><span class="st st-Fix">Fix</span> The listed version contains a fix.</li>
-          <li><span class="st st-Workaround">Workaround</span> Vulnerable; mitigation available.</li>
-          <li><span class="st st-Notvuln">Not vuln</span> Confirmed not vulnerable.</li>
-        </ul>
-        <p>The Version column relates to the status: known vulnerable versions, or the version that introduced the fix.</p>
-      </div>
-      <div>
-        <h2>Resources</h2>
-        <ul>
-          <li><a href="/what-is-php2shell">What is PHP2Shell (summary)</a></li>
-          <li><a href="https://www.php2shell.com/" target="_blank" rel="noopener noreferrer">php2shell.com</a></li>
-          <li><a href="https://github.com/NCSC-NL/php2shell/tree/main/software" target="_blank" rel="noopener noreferrer">NCSC-NL software list</a></li>
-          <li><a href="https://github.com/NCSC-NL/php2shell/blob/main/software/changelog_software_list.md" target="_blank" rel="noopener noreferrer">Software list changelog</a></li>
-          <li><a href="https://github.com/NCSC-NL/php2shell/tree/main/detection_mitigation" target="_blank" rel="noopener noreferrer">Detection &amp; mitigation</a></li>
-          <li><a href="https://www.php.net/archive/2026.php#2026-10-21-5" target="_blank" rel="noopener noreferrer">PHP security advisory</a></li>
-          <li><a href="https://cert.europa.eu/publications/security-advisories/2026-018/" target="_blank" rel="noopener noreferrer">CERT-EU Security Advisory 2026-018</a></li>
-          <li><a href="https://github.com/enisaeu/CNW/blob/main/advisories/2026/CNW-2026-04_php.md" target="_blank" rel="noopener noreferrer">EU CSIRT advisories (ENISA)</a></li>
-          <li><a href="https://github.com/NCSC-NL/php2shell#contributions-welcome" target="_blank" rel="noopener noreferrer">Contribute a correction</a></li>
-        </ul>
-      </div>
+    <div class="foot-res">
+      <h2>Official sources and advisories</h2>
+      <ul>
+        <li><a href="https://www.php2shell.com/" target="_blank" rel="noopener noreferrer">php2shell.com</a></li>
+        <li><a href="https://github.com/NCSC-NL/php2shell/tree/main/software" target="_blank" rel="noopener noreferrer">NCSC-NL software list</a></li>
+        <li><a href="https://github.com/NCSC-NL/php2shell/blob/main/software/changelog_software_list.md" target="_blank" rel="noopener noreferrer">List changelog</a></li>
+        <li><a href="https://github.com/NCSC-NL/php2shell/tree/main/detection_mitigation" target="_blank" rel="noopener noreferrer">Detection &amp; mitigation</a></li>
+        <li><a href="https://www.php.net/archive/2026.php#2026-10-21-5" target="_blank" rel="noopener noreferrer">PHP security advisory</a></li>
+        <li><a href="https://cert.europa.eu/publications/security-advisories/2026-018/" target="_blank" rel="noopener noreferrer">CERT-EU 2026-018</a></li>
+        <li><a href="https://github.com/enisaeu/CNW/blob/main/advisories/2026/CNW-2026-04_php.md" target="_blank" rel="noopener noreferrer">ENISA advisory</a></li>
+        <li><a href="https://github.com/NCSC-NL/php2shell#contributions-welcome" target="_blank" rel="noopener noreferrer">Contribute a correction</a></li>
+      </ul>
     </div>
     <div class="foot-bottom">
       <div class="foot-meta">
-        <p class="foot-statement">PHP2List is an unofficial site, not affiliated with NCSC-NL or php2shell.com.</p>
+        <p class="foot-statement">PHP2List is an unofficial site, not affiliated with NCSC-NL or php2shell.com. Accuracy is not guaranteed; use at your own risk.</p>
         <p>Data © NCSC-NL and contributors <span class="dot">·</span> <span class="nw">EUPL-1.2</span> <span class="dot">·</span> <span class="tlp">TLP:CLEAR</span></p>
         <p>Site © 2026 zer0lightning <span class="dot">·</span> <a href="https://github.com/zer0lightning/PHP2List" target="_blank" rel="noopener noreferrer">Source code on GitHub</a> <span class="dot">·</span> <span class="nw">MIT licence</span></p>
       </div>

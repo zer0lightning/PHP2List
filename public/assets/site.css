@@ -794,3 +794,68 @@ html.is-dark .changes-strip .cs-rss{color:#f4b25a}
 .changes-strip .cs-rss{gap:4px;padding:2px 8px;font-size:12px}
 .changes-strip .cs-rss svg{width:12px;height:12px}
 @media (max-width:760px){.changes-strip{flex-direction:column;align-items:flex-start;padding:8px 12px}.changes-strip .cs-links{gap:4px 16px}}
+/* ---- Declutter pass ---- */
+/* Unofficial notice: one quiet line under the intro instead of a boxed banner */
+.not-official{display:block;max-width:none!important;margin:14px 0 0!important;padding:0;border:0;background:none;border-radius:0;font-size:12.5px!important;color:var(--brand-muted)!important}
+.not-official a{color:#fff}
+/* Footer: compact row of official sources */
+.foot-res{padding:28px 0 18px}
+.foot-res h2{margin:0 0 10px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#fff}
+.foot-res ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 20px;font-size:13px}
+.foot-res a{color:var(--brand-muted)}
+.foot-res a:hover{color:#fff}
+.foot-bottom{border-top:1px solid rgba(255,255,255,.08)}
+/* Table meta row: count · list updated · status key */
+.meta-left{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 0}
+.meta-left .list-meta:not(:empty)::before{content:"·";margin:0 .5em;color:var(--faint)}
+.meta-left .src-note{margin-left:.5em;color:#b45309}
+html.is-dark .meta-left .src-note{color:#f4b25a}
+.status-key{position:relative}
+.status-key summary{cursor:pointer;color:var(--accent);font-weight:600;list-style:none}
+.status-key summary::-webkit-details-marker{display:none}
+.status-key summary::after{content:" ▾";font-size:11px}
+.status-key[open] summary::after{content:" ▴"}
+.status-key .sk-body{position:absolute;right:0;top:calc(100% + 6px);z-index:20;width:min(420px,calc(100vw - 32px));padding:14px 16px;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow-pop);font-size:13px}
+.status-key .legend{list-style:none;margin:0 0 8px;padding:0;display:grid;gap:6px}
+.status-key .sk-body p{margin:0;color:var(--muted)}
+@media (max-width:760px){.status-key .sk-body{right:auto;left:0}}
+/* Active status filter chip in the toolbar */
+.chip.on{display:inline-flex;align-items:center;gap:6px;padding:3px 10px 3px 8px;border-color:var(--ink)}
+.chip.on .chip-k{color:var(--muted);font-size:12px}
+/* Changes page: feed links on the filter row, clamped notes */
+.chg-feed{display:inline-flex;flex-wrap:wrap;align-items:center;gap:4px 12px;margin-left:auto;font-size:13px}
+.chg-feed > svg{width:14px;height:14px;color:#e08a1e;flex:none}
+.chg-feed a,.chg-feed .linkish{font-size:13px;font-weight:600}
+.chg-controls .feed-url{flex:1 1 100%;font:12.5px/1.4 var(--mono);padding:7px 9px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--panel);color:var(--ink);min-width:0}
+.ci-note.clamp{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ci-more{justify-self:start;font-size:12.5px}
+@media (max-width:760px){.chg-feed{margin-left:0}}
+/* Patch progress: as-of line above the totals */
+.charts-asof{margin:0;font-size:13px;color:var(--muted)}
+/* A–Z index: desktop and tablet only. Active status chips sit before it. */
+.filters .letters{margin-left:auto}
+.filters.no-chips .letters{margin-left:0}
+@media (max-width:760px){
+  .letters{display:none!important}
+  .filters.no-chips{display:none}
+  /* compact status cards on phones */
+  .stats{gap:8px}
+  .stat{padding:8px 12px}
+  .stat .num{font-size:22px;line-height:1.2}
+  .stat .lbl{font-size:12px}
+  /* list status on its own line under the count, without a leading dot */
+  .meta-left{flex-direction:column;gap:2px}
+  .meta-left .list-meta:not(:empty)::before{content:none}
+  .meta-left .src-note{margin-left:0}
+}
+/* API page: endpoint codes may wrap on the narrowest phones */
+@media (max-width:420px){.api-table code{white-space:normal;overflow-wrap:anywhere}}
+/* Changes page: filters sit in a panel that overlaps the header like other pages' first card */
+.chg-controls{position:relative;padding:12px 14px;background:var(--panel);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow)}
+.chg-controls .seg{box-shadow:none}
+.chg-controls select{background:var(--bg)}
+/* Watchlist box hidden until used: stats take its place over the header edge */
+body.no-watch .overview{margin-top:-18px}
+.changes-strip .cs-create{font-weight:600;color:var(--accent);border-color:color-mix(in srgb,var(--accent) 40%,var(--line));box-shadow:none}
+.changes-strip .cs-create:hover{background:color-mix(in srgb,var(--accent) 10%,var(--panel))}
+.vclose{align-self:center;margin-left:4px}

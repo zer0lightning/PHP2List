@@ -570,6 +570,19 @@ describe("deployment configuration (F-01, F-08, F-09)", () => {
       }
     }
   });
+  test("no element repeats an attribute (e.g. two width= on one icon)", async () => {
+    const { readdirSync } = await import("node:fs");
+    const files = [...readdirSync(fileURLToPath(new URL("public/", root))).filter((f) => f.endsWith(".html")).map((f) => "public/" + f),
+      ...readdirSync(fileURLToPath(new URL("public/assets/", root))).filter((f) => f.endsWith(".js")).map((f) => "public/assets/" + f)];
+    for (const f of files) {
+      const src = readFileSync(new URL(f, root), "utf8");
+      for (const m of src.matchAll(/<[a-z][a-z0-9]*\s[^<>]*>/gi)) {
+        const tag = m[0].replace(/"[^"]*"/g, '""').replace(/'[^']*'/g, "''");   // ignore text inside values
+        const names = [...tag.matchAll(/\s([a-z-]+)=/gi)].map((x) => x[1].toLowerCase());
+        assert.equal(new Set(names).size, names.length, `${f}: repeated attribute in ${m[0].slice(0, 80)}`);
+      }
+    }
+  });
   test("_routes.json runs the Worker only for /api/* and /feed.xml", () => {
     const routes = JSON.parse(readFileSync(new URL("public/_routes.json", root), "utf8"));
     assert.deepEqual(routes.include, ["/api/*", "/feed.xml"]);

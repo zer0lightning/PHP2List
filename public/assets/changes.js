@@ -36,7 +36,7 @@
   const watch = readWatch();
   const fromLink = new URLSearchParams(location.hash.slice(1)).getAll("v").length > 0;
   const inWatch = matcher(watch);
-  let events = [], period = 7, kind = "all", onlyWatch = false, limit = 200;
+  let events = [], period = 7, kind = "changes", onlyWatch = false, limit = 200;
 
   function normEvent(e){
     if (!e || typeof e !== "object" || typeof e.id !== "string" || !ID_RE.test(e.id)) return null;
@@ -66,8 +66,8 @@
 
   function render(){
     const cutoff = Date.now() - period * 86400e3;
-    const shown = events.filter(e => e.ts > cutoff && (!onlyWatch || inWatch(e)) && (kind === "all" || kindOf(e) === kind));
-    const what = { all: "status changes", fixed: "products newly fixed or not vulnerable", vuln: "products newly vulnerable or with a workaround", added: "products added to the list" }[kind];
+    const shown = events.filter(e => e.ts > cutoff && (!onlyWatch || inWatch(e)) && (kind === "all" || (kind === "changes" ? kindOf(e) !== "added" : kindOf(e) === kind)));
+    const what = { all: "changes and additions", changes: "status changes", fixed: "products newly fixed or not vulnerable", vuln: "products newly vulnerable or with a workaround", added: "products added to the list" }[kind];
     $("chgCount").innerHTML = `<strong>${shown.length.toLocaleString()}</strong> ${what} in the last ${period === 1 ? "24 hours" : period + " days"}${onlyWatch ? " in your watchlist" : ""}`;
     if (!shown.length){
       $("chgList").innerHTML = `<p class="chg-empty">Nothing matches. Try a longer period${onlyWatch ? " or include all products" : ""}.</p>`;
@@ -87,7 +87,7 @@
             <a class="ci-name" href="/#p=${e.id}">${esc(e.product)}</a><span class="ci-sup">${esc(e.supplier)}</span></div>
           <div class="ci-status">${transition(e)}</div>
           ${e.version ? `<p class="ci-ver"><span>Version:</span> ${esc(e.version)}</p>` : ""}
-          ${e.note ? `<p class="ci-note">${esc(e.note)}</p>` : ""}
+          ${e.note ? `<p class="ci-note${e.note.length > 220 ? " clamp" : ""}">${esc(e.note)}</p>${e.note.length > 220 ? `<button type="button" class="linkish ci-more" aria-expanded="false">Read more</button>` : ""}` : ""}
           ${e.links.length ? `<div class="links ci-links">${e.links.map(l => `<a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer" title="${esc(l.url)}">${esc(l.label)}</a>`).join("")}</div>` : ""}
         </li>`).join("") + `</ol></section>`;
     }
@@ -104,7 +104,11 @@
   });
   $("chgKind").addEventListener("change", e => { kind = e.target.value; limit = 200; render(); });
   $("chgWatch").addEventListener("change", e => { onlyWatch = e.target.checked; limit = 200; render(); });
-  $("chgList").addEventListener("click", e => { if (e.target.closest("#chgMore")){ limit += 200; render(); } });
+  $("chgList").addEventListener("click", e => {
+    if (e.target.closest("#chgMore")){ limit += 200; render(); return; }
+    const more = e.target.closest(".ci-more");
+    if (more){ const note = more.previousElementSibling, open = note.classList.toggle("clamp") === false; more.setAttribute("aria-expanded", String(open)); more.textContent = open ? "Show less" : "Read more"; }
+  });
   if (watch.length){
     $("chgWatchWrap").hidden = false;
     if (fromLink){ onlyWatch = true; $("chgWatch").checked = true; period = 30; for (const x of $("chgPeriod").querySelectorAll("[data-period]")) x.setAttribute("aria-pressed", String(x.dataset.period === "30")); }

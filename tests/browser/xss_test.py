@@ -36,8 +36,14 @@ def frag(**kw):
 
 CHECK = """() => ({
   flag: !!window.__xss,
-  injected: [...document.querySelectorAll('main img, main svg:not([aria-hidden]) , main iframe, main script, main details, .watch img, .watch iframe, .watch svg[onload], dialog img, .toasts img, [onerror], [onload], [ontoggle], [onmouseover], a[href^="javascript" i]')].map(e => e.outerHTML.slice(0, 80)),
+  injected: [...document.querySelectorAll('main img, main svg:not([aria-hidden]) , main iframe, main script, main details:not(#statusKey), .watch img, .watch iframe, .watch svg[onload], dialog img, .toasts img, [onerror], [onload], [ontoggle], [onmouseover], a[href^="javascript" i]')].map(e => e.outerHTML.slice(0, 80)),
 })"""
+
+async def open_watch(pg):
+    """The watchlist box is hidden until the visitor has a watchlist or clicks "Create watchlist"."""
+    if await pg.is_hidden("#watchSection"):
+        await pg.wait_for_selector("[data-create-watch]", timeout=15000)
+        await pg.click("[data-create-watch]"); await pg.wait_for_timeout(150)
 
 async def main():
     async with async_playwright() as p:
@@ -72,10 +78,11 @@ async def main():
         # --- 2. payloads typed / pasted by the visitor
         await pg.goto(B + "/"); await pg.wait_for_selector("td.c-product")
         for i, pl in enumerate(PAYLOADS[:12]):
-            await pg.fill("#vq", pl[:200]); await pg.wait_for_timeout(120); await check(pg, f"suggestions {i}")
+            await open_watch(pg); await pg.fill("#vq", pl[:200]); await pg.wait_for_timeout(120); await check(pg, f"suggestions {i}")
             await pg.keyboard.press("Enter"); await check(pg, f"typed vendor {i}")
             await pg.fill("#q", pl[:200]); await pg.wait_for_timeout(250); await check(pg, f"search {i}")
         await pg.fill("#q", "")
+        await open_watch(pg)
         if await pg.is_visible("#vpaste"): await pg.click("#vpaste")
         else: await pg.click("#vmore summary"); await pg.click('[data-more="paste"]')
         await pg.fill("#vpasteText", "\n".join(PAYLOADS)); await pg.click("#pasteDlg button[value=ok]")
@@ -106,7 +113,7 @@ async def main():
             pins = await pg.query_selector_all("#body .pin"); await pins[i].click(); await check(pg, f"star malicious row {i}")
         print("starred malicious rows:", (await pg.inner_text("#vtokens"))[:120].replace(chr(10), " "))
         for kind in ("supplier", "product"):
-            await pg.fill("#vq", "img"); await pg.wait_for_timeout(150)
+            await open_watch(pg); await pg.fill("#vq", "img"); await pg.wait_for_timeout(150)
             li = await pg.query_selector(f"#vsug li.k-{kind}")
             if li: await li.click(); await check(pg, f"pick malicious {kind}")
         if await pg.is_visible("#vshare"): await pg.click("#vshare"); await check(pg, "share dialog with malicious entries"); await pg.keyboard.press("Escape")
@@ -117,7 +124,7 @@ async def main():
         for row in await pg.query_selector_all(".links a[href='#']"):
             await row.click(); break
         await check(pg, "clicking neutralised link")
-        await pg.fill("#vq", "<img src=x onerror=window.__xss=1>"); await pg.wait_for_timeout(150); await check(pg, "suggestions from evil suppliers")
+        await open_watch(pg); await pg.fill("#vq", "<img src=x onerror=window.__xss=1>"); await pg.wait_for_timeout(150); await check(pg, "suggestions from evil suppliers")
         # error path with hostile error detail
         await pg.unroute("**/api/software")
         await pg.route("**/api/software", lambda r: r.fulfill(status=502, content_type="application/json", body=json.dumps({"error": PAYLOADS[0], "detail": PAYLOADS[2]})))
@@ -160,7 +167,7 @@ async def main():
         await pg.goto(B + "/"); await pg.reload(); await pg.wait_for_selector("#changesStrip:not([hidden])")
         await check(pg, "changes strip + markers + archived banner")
         for sel in ('[data-changed="24h"]', '[data-changed="visit"]'):
-            if await pg.is_enabled(sel): await pg.click(sel); await pg.wait_for_timeout(200); await check(pg, f"filter {sel}")
+            if await pg.query_selector(sel): await pg.click(sel); await pg.wait_for_timeout(200); await check(pg, f"filter {sel}")
         ids = await pg.evaluate("[...document.querySelectorAll('.plink')].length")
         hrefs_ok = await pg.evaluate("[...document.querySelectorAll('#body tr')].length")
         print("rows with product-link buttons:", ids, "of", hrefs_ok, "(rows whose id was a payload get none)")
