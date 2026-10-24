@@ -162,6 +162,7 @@ async def main():
             for i, pl in enumerate(PAYLOADS[:12])] + [{"t": now_iso, "id": "x", "__proto__": {"polluted": 1}}, None, "x", 5]})
         await pg.route("**/api/software", lambda r: r.fulfill(status=200, content_type="application/json", body=json.dumps({"listUpdated": PAYLOADS[2], "fetchedAt": PAYLOADS[0], "sourceArchived": True, "items": evil_items2})))
         await pg.route("**/api/changes", lambda r: r.fulfill(status=200, content_type="application/json", body=evil_changes))
+        await pg.route("**/api/recent", lambda r: r.fulfill(status=200, content_type="application/json", body=evil_changes))
         await pg.goto(B + "/" + frag(p=PAYLOADS[2]))
         await pg.wait_for_timeout(1200); await check(pg, "hostile product link (#p=)")
         await pg.goto(B + "/"); await pg.reload(); await pg.wait_for_selector("#changesStrip:not([hidden])")

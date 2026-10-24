@@ -7,7 +7,8 @@
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const NS = "http://www.w3.org/2000/svg";
   const STATUS = ["Vulnerable", "Workaround", "Investigation", "Unknown", "Fix", "Not vuln"];
-  const LABEL = { "Vulnerable": "Vulnerable", "Workaround": "Workaround", "Investigation": "Under investigation", "Unknown": "No status yet", "Fix": "Fixed", "Not vuln": "Not vulnerable" };
+  // Same status names as NCSC-NL's list and the rest of the site.
+  const LABEL = { "Vulnerable": "Vulnerable", "Workaround": "Workaround", "Investigation": "Investigation", "Unknown": "No status yet", "Fix": "Fix", "Not vuln": "Not vuln" };
   const COLOR = { "Vulnerable": "var(--vuln-bar)", "Workaround": "var(--wa-bar)", "Investigation": "var(--inv-bar)", "Unknown": "var(--faint)", "Fix": "var(--fix-bar)", "Not vuln": "var(--nv-bar)" };
   const SEV = Object.freeze(Object.assign(Object.create(null), { "Vulnerable": 0, "Workaround": 1, "Investigation": 2, "Fix": 3, "Not vuln": 4 }));
   const isStatus = (s) => typeof s === "string" && Object.hasOwn(SEV, s);
@@ -49,8 +50,8 @@
     const cards = [
       { k: "total", label: "Products listed", n: total, sub: prev ? delta(total, prev.total) : "", color: "var(--accent)" },
       { k: "open", label: "Still open", n: open, sub: `${pct(open, total)}% · vulnerable, no fix or under investigation`, color: "var(--vuln-bar)", d: prev ? delta(open, sum(prev, OPEN)) : "" },
-      { k: "fixed", label: "Fixed", n: fixed, sub: `${pct(fixed, total)}% of listed products`, color: "var(--fix-bar)", d: prev ? delta(fixed, prev.Fix || 0) : "" },
-      { k: "nv", label: "Not vulnerable", n: nv, sub: `${pct(nv, total)}% of listed products`, color: "var(--nv-bar)", d: prev ? delta(nv, prev["Not vuln"] || 0) : "" },
+      { k: "fixed", label: "Fix", n: fixed, sub: `${pct(fixed, total)}% of listed products`, color: "var(--fix-bar)", d: prev ? delta(fixed, prev.Fix || 0) : "" },
+      { k: "nv", label: "Not vuln", n: nv, sub: `${pct(nv, total)}% of listed products`, color: "var(--nv-bar)", d: prev ? delta(nv, prev["Not vuln"] || 0) : "" },
     ];
     const box = $("kpis"); box.textContent = "";
     for (const k of cards){

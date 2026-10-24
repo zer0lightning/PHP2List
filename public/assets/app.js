@@ -2,7 +2,7 @@
 // PHP2List page logic. Kept out of the HTML so the Content Security Policy can forbid inline scripts.
 (() => {
   const API_URL = "/api/software";
-  const CHANGES_URL = "/api/changes";
+  const CHANGES_URL = "/api/recent";    // compact: newest change per product
   const LS_VENDORS = "php2list.vendors";
   const LS_VISIT = "php2list.visit";
   const ID_RE = /^[a-z0-9][a-z0-9-]{0,150}$/;
@@ -112,7 +112,7 @@
     el.addEventListener("mouseleave", () => { timer = setTimeout(close, 2500); });
   }
   const state = { q:"", statuses:new Set(), cve:"any", letter:"", sortKey:"supplier", sortDir:1, vendors:[], changed:"", pid:"" };
-  // sharedView: the page was opened from a link whose vendor list differs from the visitor's saved watchlist.
+  // sharedView: the page was opened from a link whose watchlist differs from the visitor's saved one.
   // While true, the visitor's own saved watchlist is left untouched.
   let sharedView = false;
   // view: "watch" shows only watchlist matches; "all" shows everything (so you can browse and star rows).
@@ -448,11 +448,42 @@
       return;
     }
     lastRows = rows;
-    $("body").innerHTML = (limited ? rows.slice(0, FIRST_PAGE) : rows).map(rowHtml).join("") + (limited ? `<tr class="more-row"><td colspan="7"><button type="button" class="btn" data-show-all>Show all ${rows.length.toLocaleString()} products</button><span class="more-hint">or search above to find a product</span></td></tr>` : "");
+    stopBatches();
+    if (limited){
+      $("body").innerHTML = rows.slice(0, FIRST_PAGE).map(rowHtml).join("") + `<tr class="more-row"><td colspan="7"><button type="button" class="btn" data-show-all>Show all ${rows.length.toLocaleString()} products</button><span class="more-hint">or search above to find a product</span></td></tr>`;
+    } else {
+      rendered = Math.min(rows.length, BATCH);
+      $("body").innerHTML = rows.slice(0, rendered).map(rowHtml).join("") + (rendered < rows.length ? SENTINEL : "");
+      watchSentinel();
+    }
     scheduleNotes();
   }
 
-  const LINK_ICON = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7.1 0l3-3a5 5 0 0 0-7.1-7.1l-1.2 1.2"/><path d="M14 10a5 5 0 0 0-7.1 0l-3 3a5 5 0 0 0 7.1 7.1l1.2-1.2"/></svg>';
+  // Long lists are drawn in batches: the first BATCH rows straight away, the rest as the visitor
+  // scrolls toward the end. Laying out hundreds of rows of wrapped notes at once is what made
+  // "Show all" slow. Exports and search always use the full list, not what's on screen.
+  const BATCH = 200;
+  const SENTINEL = '<tr class="more-sentinel" aria-hidden="true"><td colspan="7"></td></tr>';
+  let rendered = 0, batchObserver = null;
+  function stopBatches(){ if (batchObserver){ batchObserver.disconnect(); batchObserver = null; } }
+  function appendBatch(n = BATCH){
+    const s = $("body").querySelector(".more-sentinel"); if (!s) return;
+    const end = Math.min(lastRows.length, rendered + n);
+    s.insertAdjacentHTML("beforebegin", lastRows.slice(rendered, end).map((r, k) => rowHtml(r, rendered + k)).join(""));
+    rendered = end;
+    if (rendered >= lastRows.length){ s.remove(); stopBatches(); }
+    scheduleNotes();
+  }
+  function watchSentinel(){
+    const s = $("body").querySelector(".more-sentinel"); if (!s) return;
+    if (!("IntersectionObserver" in window)){ appendBatch(lastRows.length); return; }
+    batchObserver = new IntersectionObserver(entries => { if (entries.some(e => e.isIntersecting)) appendBatch(); }, { rootMargin: "1500px 0px" });
+    batchObserver.observe(s);
+  }
+  // Printing (or saving as PDF) should include every row.
+  addEventListener("beforeprint", () => appendBatch(lastRows.length));
+
+  const LINK_ICON = '<i class="i-link" aria-hidden="true"></i>';   // drawn by CSS: fewer elements per row
   // A small "Changed 3 h ago" / "Added" marker for products changed in the last 24 hours
   // or since the last visit. Text is built from fixed words, statuses and times, all escaped.
   function changeMark(r){
@@ -527,13 +558,16 @@
   // Show "Read more" only on rows whose note text is actually cut off.
   function markClampedNotes(){
     if (!$("wrap").classList.contains("clamp")) { for (const b of $("body").querySelectorAll("[data-more-notes]")) b.hidden = true; return; }
-    const cells = [...$("body").querySelectorAll("td.c-notes")];
+    const cells = [...$("body").querySelectorAll("td.c-notes:not([data-measured])")];
+    for (const td of cells) td.dataset.measured = "1";
     const cut = cells.map(td => [...td.querySelectorAll(".notes p + p")].some(p => p.scrollHeight > p.clientHeight + 1));   // read all first
     cells.forEach((td, i) => { const b = td.querySelector("[data-more-notes]"); if (b && !td.closest("tr").classList.contains("notes-open")) b.hidden = !cut[i]; });  // then write
   }
   let notesFrame;
   const scheduleNotes = () => { cancelAnimationFrame(notesFrame); notesFrame = requestAnimationFrame(markClampedNotes); };
-  addEventListener("resize", scheduleNotes);
+  // Width changes (and switching note clamping back on) need every row measured again.
+  const remeasureNotes = () => { for (const td of $("body").querySelectorAll("td.c-notes[data-measured]")) delete td.dataset.measured; scheduleNotes(); };
+  addEventListener("resize", remeasureNotes);
 
   function render(){
     const base = scoped();
@@ -827,7 +861,7 @@
     else toast("Couldn't copy automatically. The link is selected, so press Ctrl+C (⌘C on Mac) to copy it.", { warn: true });
   });
   $("shareNative").addEventListener("click", async () => {
-    try { await navigator.share({ title: "PHP2List – my vendor list", text: "PHP2Shell software list filtered to my vendors (unofficial viewer)", url: $("shareUrl").value }); } catch(e){}
+    try { await navigator.share({ title: "PHP2List – my watchlist", text: "PHP2Shell software list filtered to my watchlist (unofficial viewer)", url: $("shareUrl").value }); } catch(e){}
   });
 
   $("vtokens").addEventListener("click", e => {
@@ -907,7 +941,7 @@
     const on = $("wrap").classList.toggle("clamp");
     e.currentTarget.setAttribute("aria-pressed", String(!on));
     e.currentTarget.textContent = on ? "Expand notes" : "Collapse notes";
-    scheduleNotes();
+    remeasureNotes();
   });
   $("export").addEventListener("click", e => {
     const b = e.target.closest("button[data-export]"); if (!b) return;
@@ -970,7 +1004,6 @@
       if (cache === "STALE") stale.innerHTML = notice("warn", "Showing a saved copy of the list",
         `<p>GitHub couldn't be reached just now, so changes made in the last few hours may be missing. The list will refresh automatically when GitHub is available again.</p>`);
       render();
-      loadChanges();
     }).catch(err => {
       $("count").textContent = "";
       $("updated").textContent = "List status unavailable";
@@ -1004,8 +1037,9 @@
       changeById = m; changesLoaded = true;
       latestChange = Math.max(0, ...[...m.values()].map(e => e.ts).filter(t => t <= Date.now()));
       if (state.changed) showAll = true;
-      render();
+      if (loaded) render();
     }).catch(() => {});
   }
   load();
+  loadChanges();     // in parallel with the list; markers appear once both have arrived
 })();

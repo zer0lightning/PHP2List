@@ -152,3 +152,14 @@ New attack surface: `/api/changes`, `/api/v1/*` (CORS), `/feed.xml?v=…` (visit
 
 Re-checked and clean: route lookup uses `Object.hasOwn` (`/api/v1/__proto__` and `/api/v1/constructor` return 404); new client code inserts data only through `esc()`; status CSS classes come from a fixed list; the Changes page validates every API field like the main page does.
 | F-30 | Info | Feed opened in a browser tab showed raw XML. | Browser tab navigations (`Sec-Fetch-Dest: document` + `Sec-Fetch-Mode: navigate`) get a 303 to `/subscribe`. Only cleaned `v` entries are carried over, re-encoded, with a fixed relative `Location`, so there's no open redirect. Responses send `Vary: Sec-Fetch-Dest, Sec-Fetch-Mode`. The Subscribe page shows entries with `textContent` only and is covered by the browser XSS suite. XSLT styling was rejected because Chrome is removing XSLT support. |
+
+### Pass 6 (performance changes)
+
+Reviewed the performance changes: `/api/recent`, preload hints, batched rendering, the CSS-drawn link icon and longer asset caching.
+
+| ID | Severity | Finding | Fix |
+| --- | --- | --- | --- |
+| F-31 | Info | `/api/recent` is a new internal endpoint. | It's built only from the already-validated changes data. The client keeps its ID and field validation, it isn't exposed under `/api/v1` (404, tested), and the browser XSS suite now feeds hostile data through it. |
+| F-32 | Info | Week-long caching of `/assets/*` could serve stale code if pages aren't rebuilt after an asset change. | Every asset link carries a content hash; `npm test` fails if any hash is out of date. |
+| F-33 | Info | The link icon moved from inline SVG to a CSS `mask` with a `data:` URL. | Covered by the existing CSP (`img-src 'self' data:`); no new sources were allowed. |
+

@@ -5,6 +5,7 @@
 //   GET /api/software   the software list, parsed from the source repository's Markdown
 //   GET /api/timeline   status history rebuilt from the source repository's changelog
 //   GET /api/changes    recent status changes (from → to), newest first
+//   GET /api/recent     the newest change per product only (compact; used by the main page)
 //   GET /api/v1/...     the same three datasets as a documented public API (CORS enabled)
 //   GET /feed.xml       Atom feed of status changes; ?v=<watchlist entry> narrows it
 // Static pages are served directly by Pages (see _routes.json) and never run this code.
@@ -667,6 +668,19 @@ function derived(name, kvKey, normalise, buildFrom, env, ctx, origin) {
 const getTimelineBody = (env, ctx, origin) => derived("timeline", "timeline.json", normaliseTimeline, buildTimelineFrom, env, ctx, origin);
 const getChangesBody = (env, ctx, origin) => derived("changes", "changes.json", normaliseChanges, buildChangesFrom, env, ctx, origin);
 
+// Compact version for the main page: only the newest change per product, without notes or links
+// (about a tenth of the size). Rebuilt from the cached changes whenever those are refreshed.
+export function recentFrom(changes) {
+  const seen = new Set(), events = [];
+  for (const e of changes.events) {
+    if (seen.has(e.id)) continue;
+    seen.add(e.id);
+    events.push({ t: e.t, id: e.id, s1: e.s1, s2: e.s2, prev: e.prev });
+  }
+  return { apiVersion: 1, generatedAt: changes.generatedAt, count: events.length, events };
+}
+const getRecentBody = (env, ctx, origin) => cached("recent", async () => recentFrom(JSON.parse((await getChangesBody(env, ctx, origin)).body)), env, ctx, origin);
+
 async function respond(getBody, env, ctx, origin) {
   try {
     const { body, state } = await getBody(env, ctx, origin);
@@ -837,6 +851,8 @@ const ROUTES = {
   timeline: (env, ctx, origin) => respond(getTimelineBody, env, ctx, origin),
   changes: (env, ctx, origin) => respond(getChangesBody, env, ctx, origin),
 };
+// Used by the site only (not part of the public /api/v1).
+const INTERNAL = { recent: (env, ctx, origin) => respond(getRecentBody, env, ctx, origin) };
 const CORS = { "access-control-allow-origin": "*", "access-control-allow-methods": "GET, HEAD, OPTIONS", "access-control-max-age": "86400" };
 
 function finish(res, { cors = false } = {}) {
@@ -865,6 +881,7 @@ export default {
       if (path === "/api/v1") return finish(new Response(apiIndex(url.origin), { headers: { "content-type": "application/json; charset=utf-8", "cache-control": "public, max-age=3600" } }), { cors });
       const name = v1 ? path.slice("/api/v1/".length) : path.slice("/api/".length);
       if (Object.hasOwn(ROUTES, name)) return finish(await ROUTES[name](env, ctx, url.origin), { cors });
+      if (!v1 && Object.hasOwn(INTERNAL, name)) return finish(await INTERNAL[name](env, ctx, url.origin));
       return finish(new Response(JSON.stringify({ error: "Not found" }), { status: 404, headers: { "content-type": "application/json; charset=utf-8" } }), { cors });
     }
     // Normally unreachable (_routes.json sends only /api/* and /feed.xml here); kept as a safe fallback.

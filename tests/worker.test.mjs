@@ -5,7 +5,7 @@ import { test, describe, beforeEach } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import worker, { parseSource, sourcesFrom, cleanText, cleanUrl, parseTable, parseChangelog, buildTimelineFrom, cached, _internals, _resetState, buildListFromFiles, normaliseList, normaliseTimeline, productId, buildChangesFrom, normaliseChanges, buildFeed, watchMatcher, cleanEntry, changeSummary } from "../public/_worker.js";
+import worker, { parseSource, sourcesFrom, cleanText, cleanUrl, parseTable, parseChangelog, buildTimelineFrom, cached, _internals, _resetState, buildListFromFiles, normaliseList, normaliseTimeline, productId, buildChangesFrom, normaliseChanges, buildFeed, watchMatcher, cleanEntry, changeSummary, recentFrom } from "../public/_worker.js";
 
 const root = new URL("..", import.meta.url);
 const { LIMITS, PAGE_CSP, worstOf } = _internals();
@@ -534,6 +534,21 @@ describe("product IDs, recent changes, Atom feed and the public API", () => {
     assert.equal(r3.status, 200);
     assert.match(r3.headers.get("vary"), /Sec-Fetch-Dest/);
   });
+  test("/api/recent: newest change per product only, without notes or links; not part of /api/v1", async () => {
+    const r = recentFrom({ generatedAt: "x", events: [
+      { t: "2026-10-24T09:00:00Z", id: "a--b", s1: "Fix", s2: "Fix", prev: { s1: "Vulnerable", s2: "Vulnerable" }, note: "long", links: [{ label: "l", url: "https://e.example/" }] },
+      { t: "2026-10-23T09:00:00Z", id: "a--b", s1: "Vulnerable", s2: "Vulnerable", prev: null, note: "", links: [] },
+      { t: "2026-10-22T09:00:00Z", id: "c--d", s1: "Investigation", s2: "Investigation", prev: null, note: "", links: [] }] });
+    assert.deepEqual(r.events.map((e) => [e.id, e.s1]), [["a--b", "Fix"], ["c--d", "Investigation"]]);
+    assert.deepEqual(Object.keys(r.events[0]).sort(), ["id", "prev", "s1", "s2", "t"]);
+    const files = siteFiles(row("Acme", "Widget"));
+    files["software/changelog_software_list.md"] = `|${stamp(new Date(Date.now() - 3600e3).toISOString())}|Acme|Widget||Vulnerable|Vulnerable|n||\n`;
+    mockUpstream((u) => files[u.replace(/^https:\/\/raw\.githubusercontent\.com\/NCSC-NL\/php2shell\/main\//, "")], []);
+    const res = await worker.fetch(req("/api/recent"), env0, ctx());
+    assert.equal(res.status, 200);
+    assert.equal((await res.json()).events[0].id, "acme--widget");
+    assert.equal((await worker.fetch(req("/api/v1/recent"), env0, ctx())).status, 404);
+  });
   test("SOURCE_ARCHIVED marks the list as no longer updated", async () => {
     const files = siteFiles(row("Acme", "Widget"));
     mockUpstream((u) => files[u.replace(/^https:\/\/raw\.githubusercontent\.com\/NCSC-NL\/php2shell\/main\//, "")], []);
@@ -593,6 +608,7 @@ describe("deployment configuration (F-01, F-08, F-09)", () => {
     assert.equal(csp, PAGE_CSP);
     assert.ok(!/unsafe-inline|unsafe-eval|\*/.test(csp), csp);
     for (const h of ["Strict-Transport-Security", "X-Content-Type-Options: nosniff", "Referrer-Policy: no-referrer", "X-Frame-Options: DENY"]) assert.ok(headers.includes(h), h);
+    assert.match(headers, /\/assets\/\*\s+Cache-Control: public, max-age=604800/, "versioned assets are cached for a week");
   });
   test("no inline scripts, inline styles or inline event handlers in any page", async () => {
     const { readdirSync } = await import("node:fs");

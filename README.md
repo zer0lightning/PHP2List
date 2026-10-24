@@ -49,6 +49,13 @@ The data refreshes itself (from the prebuilt KV data, or directly from the sourc
 - **Archived mode:** when NCSC-NL archives the source repository (detected by the data Action, or set `SOURCE_ARCHIVED=true`), visitors see that the list is no longer updated.
 - **Privacy notice** on first visit (no cookies set by PHP2List; Cloudflare's hosting role disclosed), with a "Don't save my settings" option and a footer "Privacy choices" link.
 
+## Performance
+
+- No web fonts, images or third-party scripts. Pages and code are small (about 20 KB gzipped for the main script, 13 KB for the stylesheet).
+- Stylesheets and scripts are linked with a content hash and cached for a week; pages themselves are always revalidated.
+- The main page starts downloading the list and a compact "recent changes" file (`/api/recent`, about 12 KB gzipped) in parallel while the page is still loading.
+- Long lists are drawn 200 rows at a time as you scroll, so "Show all" and broad filters stay quick. Search, filters, exports and printing always use the full list.
+
 ## Security
 
 - **Strict Content Security Policy:** scripts and styles only from the site's own files, so no inline or injected code can run. Nothing loads from other origins, and the site can't be framed. Also HSTS, `nosniff`, `no-referrer`, `X-Frame-Options: DENY`, COOP/CORP and a restrictive Permissions-Policy.

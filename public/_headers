@@ -11,5 +11,7 @@
   Cross-Origin-Resource-Policy: same-origin
   Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), interest-cohort=()
 
+# Stylesheets and scripts are linked with ?v=<content hash> (tools/build_pages.py), so a new
+# deploy always uses new URLs. They can therefore be cached for a week.
 /assets/*
-  Cache-Control: public, max-age=300
+  Cache-Control: public, max-age=604800
