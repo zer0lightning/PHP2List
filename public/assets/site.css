@@ -859,3 +859,9 @@ body.no-watch .overview{margin-top:-18px}
 .changes-strip .cs-create{font-weight:600;color:var(--accent);border-color:color-mix(in srgb,var(--accent) 40%,var(--line));box-shadow:none}
 .changes-strip .cs-create:hover{background:color-mix(in srgb,var(--accent) 10%,var(--panel))}
 .vclose{align-self:center;margin-left:4px}
+/* The first card below the header overlaps it by 18px; keep that zone free of text */
+.hero{padding-bottom:40px}
+@media (max-width:760px){.hero{padding-bottom:36px}}
+/* Tighter gap between the Recent changes bar and the search toolbar */
+.toolbar{margin-top:2px}
+@media (max-width:760px){.toolbar{margin-top:12px}}
