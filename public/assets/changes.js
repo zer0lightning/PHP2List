@@ -37,6 +37,10 @@
   const fromLink = new URLSearchParams(location.hash.slice(1)).getAll("v").length > 0;
   const inWatch = matcher(watch);
   let events = [], period = 7, kind = "changes", onlyWatch = false, limit = 200;
+  // A link can preselect the type of change, e.g. /changes#kind=all (only known values are accepted).
+  const KINDS = ["changes", "fixed", "vuln", "added", "all"];
+  const kindFromLink = new URLSearchParams(location.hash.slice(1)).get("kind");
+  if (KINDS.includes(kindFromLink)) { kind = kindFromLink; $("chgKind").value = kind; }
 
   function normEvent(e){
     if (!e || typeof e !== "object" || typeof e.id !== "string" || !ID_RE.test(e.id)) return null;

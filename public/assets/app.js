@@ -485,7 +485,7 @@
     const box = $("changesStrip");
     if (!loaded){ box.hidden = true; return; }
     box.hidden = false;
-    const links = `<span class="cs-links"><a href="/changes">All changes</a><a href="/charts">Patch progress</a>
+    const links = `<span class="cs-links"><a href="/changes#kind=all">All changes</a><a href="/charts">Patch progress</a>
       ${state.vendors.length || watchOpen ? "" : `<button type="button" class="btn sm cs-create" data-create-watch>＋ Create watchlist</button>`}</span>`;
     const icon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`;
     if (!changesLoaded){ box.innerHTML = `<span class="cs-main">${icon}<span class="cs-label">Recent changes</span></span>${links}`; return; }
