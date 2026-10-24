@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What is PHP2Shell · PHP2List - PHP2Shell Software List</title>
+<meta name="description" content="A plain-language summary of the PHP2Shell vulnerabilities (CVE-2026-109618, CVE-2026-109619): what they are, who is affected and what to do, with links to the official sources.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://php2list.com/what-is-php2shell">
+<link rel="alternate" type="application/atom+xml" title="PHP2List: status changes" href="/feed.xml">
+<script src="/assets/theme-init.js?v=2f438d6943"></script>
+<script src="/assets/theme.js?v=80f7b21ef5" defer></script>
+<script src="/assets/consent.js?v=02432779ae" defer></script>
+<script src="/assets/leave.js?v=9bdeb52dd6" defer></script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23233a6b'/%3E%3Cpath d='M12 10l-6 6 6 6M20 10l6 6-6 6' stroke='%23ffb547' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/assets/site.css?v=f1f8372033">
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<header class="site-header">
+  <div class="container">
+    <div class="topbar">
+      <a class="brand" href="/" aria-label="PHP2List home">
+        <svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="rgba(255,255,255,.1)"/><path d="M12 10l-6 6 6 6M20 10l6 6-6 6" stroke="#ffb547" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="brand-text"><span class="brand-name">PHP2<span>List</span></span><span class="byline">by zer0lightning</span></span>
+        <span class="brand-tag">PHP2Shell Software List</span>
+      </a>
+      <nav class="nav" aria-label="Site">
+        <a href="/">Software list</a>
+        <a href="/changes">Changes</a>
+        <a href="/what-is-php2shell" aria-current="page">What is PHP2Shell</a>
+        <a href="/charts">Patch progress</a>
+        <a href="https://github.com/NCSC-NL/php2shell" target="_blank" rel="noopener noreferrer" title="External site: NCSC-NL's source list on GitHub">Source list<svg width="16" height="16" class="ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span class="sr-only"> (external site)</span></a>
+        <a href="/about">About</a>
+      </nav>
+      <!-- Source repository (placeholder until the repo is published): change the href here and REPO_URL in tools/build_pages.py -->
+      <a class="gh-link" href="https://github.com/zer0lightning/PHP2List" target="_blank" rel="noopener noreferrer" aria-label="PHP2List source code on GitHub (external site)" title="Source code on GitHub"><svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg></a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme" title="Switch theme">
+        <svg class="i-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="i-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+    </div>
+    <div class="page-hero">
+      <div class="crumbs"><a href="/">PHP2List</a> / What is PHP2Shell?</div>
+      <h1>What is PHP2Shell?</h1>
+      <p>A plain-language summary of the vulnerabilities: what they are, who is affected and what to do. Official sources are listed at the end.</p>
+    </div>
+  </div>
+</header>
+<main class="container" id="content">
+<article class="prose">
+<div class="notice notice-danger"><span class="n-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.5h.01"/></svg></span><div class="n-body"><span class="n-title">In short</span><p>PHP2Shell is a family of <b>critical</b> memory-safety vulnerabilities in PHP itself, tracked as CVE-2026-109618 and CVE-2026-109619 (CVSS 9.2). They can let an <b>unauthenticated</b> attacker run code on a server that uses PHP to serve web requests, or read secrets from its memory. PHP released fixes on <b>21 October 2026</b>: update to <b>8.5.12, 8.4.27, 8.3.36 or 8.2.35</b> (or a vendor-patched package), then restart every PHP process.</p></div></div>
+
+<h2>What PHP2Shell is</h2>
+<p>The bugs are in the PHP runtime, not in any particular application. When a request is cut short by a fatal error, for example by running out of its memory allowance, PHP could leave internal data half-built or pointing at memory that has already been freed. A carefully crafted request can then turn that leftover state into code execution or a leak of memory belonging to other requests.</p>
+<p>Because the flaw sits below the application, a fully up-to-date WordPress, Drupal or other PHP application is still exposed if the PHP runtime underneath is unpatched. The researchers report that even a minimal "Hello World" PHP page on an affected version can be attacked.</p>
+
+<h2>The two vulnerabilities</h2>
+<p>Descriptions follow the official PHP advisory.</p>
+<div class="table-scroll"><table class="data-table prose-table">
+  <thead><tr><th scope="col">CVE</th><th scope="col">What goes wrong</th><th scope="col">Advisory</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">CVE-2026-109618</th><td>Remote code execution via out-of-memory corruption. Hitting the memory limit at the wrong moment can leave request data partly initialised, which PHP later treats as valid during cleanup.</td><td><a href="https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w" target="_blank" rel="noopener noreferrer">GHSA-w8hw-w9fx-j79w</a></td></tr>
+    <tr><th scope="row">CVE-2026-109619</th><td>Remote code execution via stale global state. Internal state belonging to one request can outlive its memory and be used by the next request on the same worker (a use-after-free).</td><td><a href="https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp" target="_blank" rel="noopener noreferrer">GHSA-6wmf-4rv5-p3rp</a></td></tr>
+  </tbody>
+</table></div>
+<p>Both are rated CVSS 9.2. PHP considers Apache with <code>mod_php</code> the highest-risk setup: there, with a demonstrated exploit, an unauthenticated request can trigger the attack before any application code runs.</p>
+
+<h2>Who is affected</h2>
+<ul>
+  <li><b>Any PHP installation that serves web requests</b>, including PHP-FPM, Apache with mod_php, php-cgi, FrankenPHP and LiteSpeed.</li>
+  <li><b>Versions:</b> affected releases date back to PHP 5.4, and nearly every version before the fix has at least one of the bugs. Exposure depends on the version, the configuration and how PHP is run.</li>
+  <li><b>Products that bundle PHP</b>: appliances, control panels, hosting platforms and other software that ship their own PHP runtime need an update from their vendor. The <a href="/">PHP2List software list</a> tracks known products.</li>
+  <li><b>Demonstrated targets:</b> the researchers showed pre-authentication code execution against widely used applications including WordPress, Drupal and Joomla.</li>
+</ul>
+<div class="table-scroll"><table class="data-table prose-table versions">
+  <thead><tr><th scope="col">PHP branch</th><th scope="col">Fixed in</th><th scope="col">Notes</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">8.5</th><td>8.5.12</td><td></td></tr>
+    <tr><th scope="row">8.4</th><td>8.4.27</td><td></td></tr>
+    <tr><th scope="row">8.3</th><td>8.3.36</td><td></td></tr>
+    <tr><th scope="row">8.2</th><td>8.2.35</td><td>8.2 reaches end of life on 31 December 2026.</td></tr>
+    <tr><th scope="row">8.1 and older</th><td>No official release</td><td>End of life. Get a backported package from your distribution or LTS vendor, or upgrade. PHP published minimal source backports for 7.4, 8.0 and 8.1.</td></tr>
+  </tbody>
+</table></div>
+
+<h2>What to do</h2>
+<ol class="steps">
+  <li><b>Update the PHP runtime everywhere it runs</b>, using your operating system's packages, your hosting provider, or the fixed releases. Updating an application or CMS does <em>not</em> update PHP.</li>
+  <li><b>Restart</b> Apache, PHP-FPM and any long-running PHP workers, so the fixed code is actually loaded.</li>
+  <li><b>Check products that bundle PHP</b> (appliances, panels, container images) and apply vendor updates. Use the <a href="/">software list</a> to see what's known.</li>
+  <li><b>If you can't patch straight away</b>, CERT-EU advises isolating internet-facing applications from public networks until the fix is applied and verified. PHP's advisory lists temporary configuration changes (such as disabling <code>session.upload_progress</code> and adjusting memory limits) that block some attack paths. These are <b>partial</b> and don't make an installation safe, and some have side effects, so follow the exact guidance in the <a href="https://www.php.net/archive/2026.php#2026-10-21-5" target="_blank" rel="noopener noreferrer">PHP advisory</a> rather than a summary.</li>
+  <li><b>After patching</b>, review any temporary settings you changed. The fix introduces a new hard memory limit (described in PHP's advisory and summarised on php2shell.com), so check that <code>memory_limit</code> and <code>post_max_size</code> fit your application.</li>
+</ol>
+
+<h2>Signs to look for</h2>
+<p>Because the bugs act below the application, application logs may show little. Wiz Research suggests watching for:</p>
+<ul>
+  <li>unusual multipart (file-upload style) requests followed by memory-limit errors;</li>
+  <li>bursts of HTTP 500 responses;</li>
+  <li>unusually large or malformed <code>PHPSESSID</code> cookies;</li>
+  <li>PHP workers crashing or restarting without explanation.</li>
+</ul>
+<p>Several security vendors have published detections and protections; see the sources below. Proof-of-concept material circulated after an early leak. The PHP security team said it had not identified any functional exploits among it at the time of release, but CERT-EU warns that attackers may already be exploiting the flaws.</p>
+
+<h2>Timeline</h2>
+<ul class="timeline">
+  <li><b>2024</b>: while fixing an issue found in an external security audit, a PHP developer spots the first signs of the out-of-memory problem. An exploit is theorised, but no concrete attack is found.</li>
+  <li><b>August–September 2026</b>: Calif and OpenAI independently report the same root cause on 11 August. Wiz Research reports further attack vectors on 24 August, and OpenAI on 18 September.</li>
+  <li><b>20 October 2026</b>: the CVE identifiers leak early, without technical details. PHP publishes a pre-announcement and moves the release forward by a day.</li>
+  <li><b>21 October 2026</b>: PHP releases 8.5.12, 8.4.27, 8.3.36 and 8.2.35 and publishes its advisory; the researchers publish their write-ups.</li>
+</ul>
+<p>Dates are from the PHP Foundation's account of the release. The people who found the bugs are credited on our <a href="/acknowledgements">acknowledgements</a> page.</p>
+
+<h2>Official sources</h2>
+<p>This page is PHP2List's own summary. For anything you act on, rely on the official sources below; if they differ from this page, they are right.</p>
+<ul class="sources">
+  <li><a href="https://www.php2shell.com/" target="_blank" rel="noopener noreferrer">php2shell.com</a><span>The official PHP2Shell site, published by Wiz, crediting all the research teams: overview, affected versions, mitigations and links to every write-up.</span></li>
+  <li><a href="https://www.php.net/archive/2026.php#2026-10-21-5" target="_blank" rel="noopener noreferrer">PHP security advisory (php.net)</a><span>The authoritative advisory with fixed versions and exact temporary mitigations.</span></li>
+  <li><a href="https://github.com/php/php-src/security/advisories/GHSA-w8hw-w9fx-j79w" target="_blank" rel="noopener noreferrer">GHSA-w8hw-w9fx-j79w</a> and <a href="https://github.com/php/php-src/security/advisories/GHSA-6wmf-4rv5-p3rp" target="_blank" rel="noopener noreferrer">GHSA-6wmf-4rv5-p3rp</a><span>PHP's GitHub security advisories for each CVE.</span></li>
+  <li><a href="https://thephp.foundation/blog/2026/10/21/todays-php-security-release-and-how-were-strengthening-php-security/" target="_blank" rel="noopener noreferrer">The PHP Foundation blog</a><span>How the bugs were found and fixed, the full timeline, and what's changing.</span></li>
+  <li><a href="https://www.wiz.io/blog/php2shell-php-rce" target="_blank" rel="noopener noreferrer">Wiz Research</a><span>Technical write-up and detection guidance.</span></li>
+  <li><a href="https://calif.io/php2shell/" target="_blank" rel="noopener noreferrer">Calif</a><span>Technical write-up of the attack paths and demonstrated targets.</span></li>
+  <li><a href="https://openai.com/index/coordinated-disclosure-of-critical-vulnerabilities" target="_blank" rel="noopener noreferrer">OpenAI</a><span>How the disclosure was coordinated.</span></li>
+  <li><a href="https://cert.europa.eu/publications/security-advisories/2026-018/" target="_blank" rel="noopener noreferrer">CERT-EU Security Advisory 2026-018</a><span>Affected versions and recommendations for organisations.</span></li>
+  <li><a href="https://github.com/NCSC-NL/php2shell" target="_blank" rel="noopener noreferrer">NCSC-NL php2shell repository</a><span>Operational information and the software list this site displays.</span></li>
+  <li><a href="https://github.com/enisaeu/CNW/blob/main/advisories/2026/CNW-2026-04_php.md" target="_blank" rel="noopener noreferrer">EU CSIRTs Network advisory list</a><span>Advisories from national CSIRTs across the EU.</span></li>
+</ul>
+<p class="meta-line">Summary written by PHP2List from the sources above. Last checked: 22 October 2026.</p>
+</article>
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="foot-grid">
+      <div>
+        <h2>About PHP2List</h2>
+        <p>A searchable view of the software inventory published by NCSC-NL and contributors in the <a href="https://github.com/NCSC-NL/php2shell" target="_blank" rel="noopener noreferrer">php2shell repository</a>, licensed under EUPL-1.2. The list refreshes automatically from GitHub.</p>
+        <p>The vulnerabilities were found by researchers at Wiz Research, OpenAI and Calif. Read the full story at <a href="https://www.php2shell.com/" target="_blank" rel="noopener noreferrer">php2shell.com</a> and see our <a href="/acknowledgements">acknowledgements</a>.</p>
+        <p>Accuracy is not guaranteed; use at your own risk. No support is offered; list corrections go to <a href="https://github.com/NCSC-NL/php2shell#contributions-welcome" target="_blank" rel="noopener noreferrer">NCSC-NL</a>. See the <a href="/disclaimer">disclaimer</a>.</p>
+      </div>
+      <div>
+        <h2>Status labels</h2>
+        <ul class="legend">
+          <li><span class="st st-Investigation">Investigation</span> May be affected; being assessed.</li>
+          <li><span class="st st-Vulnerable">Vulnerable</span> Confirmed vulnerable in the stated scope.</li>
+          <li><span class="st st-Fix">Fix</span> The listed version contains a fix.</li>
+          <li><span class="st st-Workaround">Workaround</span> Vulnerable; mitigation available.</li>
+          <li><span class="st st-Notvuln">Not vuln</span> Confirmed not vulnerable.</li>
+        </ul>
+        <p>The Version column relates to the status: known vulnerable versions, or the version that introduced the fix.</p>
+      </div>
+      <div>
+        <h2>Resources</h2>
+        <ul>
+          <li><a href="/what-is-php2shell" aria-current="page">What is PHP2Shell (summary)</a></li>
+          <li><a href="https://www.php2shell.com/" target="_blank" rel="noopener noreferrer">php2shell.com</a></li>
+          <li><a href="https://github.com/NCSC-NL/php2shell/tree/main/software" target="_blank" rel="noopener noreferrer">NCSC-NL software list</a></li>
+          <li><a href="https://github.com/NCSC-NL/php2shell/blob/main/software/changelog_software_list.md" target="_blank" rel="noopener noreferrer">Software list changelog</a></li>
+          <li><a href="https://github.com/NCSC-NL/php2shell/tree/main/detection_mitigation" target="_blank" rel="noopener noreferrer">Detection &amp; mitigation</a></li>
+          <li><a href="https://www.php.net/archive/2026.php#2026-10-21-5" target="_blank" rel="noopener noreferrer">PHP security advisory</a></li>
+          <li><a href="https://cert.europa.eu/publications/security-advisories/2026-018/" target="_blank" rel="noopener noreferrer">CERT-EU Security Advisory 2026-018</a></li>
+          <li><a href="https://github.com/enisaeu/CNW/blob/main/advisories/2026/CNW-2026-04_php.md" target="_blank" rel="noopener noreferrer">EU CSIRT advisories (ENISA)</a></li>
+          <li><a href="https://github.com/NCSC-NL/php2shell#contributions-welcome" target="_blank" rel="noopener noreferrer">Contribute a correction</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div class="foot-meta">
+        <p class="foot-statement">PHP2List is an unofficial site, not affiliated with NCSC-NL or php2shell.com.</p>
+        <p>Data © NCSC-NL and contributors <span class="dot">·</span> <span class="nw">EUPL-1.2</span> <span class="dot">·</span> <span class="tlp">TLP:CLEAR</span></p>
+        <p>Site © 2026 zer0lightning <span class="dot">·</span> <a href="https://github.com/zer0lightning/PHP2List" target="_blank" rel="noopener noreferrer">Source code on GitHub</a> <span class="dot">·</span> <span class="nw">MIT licence</span></p>
+      </div>
+      <nav class="foot-links" aria-label="Footer">
+        <div class="fl-main">
+          <a href="/">Software list</a>
+          <a href="/changes">Changes</a>
+          <a href="/what-is-php2shell" aria-current="page">What is PHP2Shell</a>
+          <a href="/charts">Patch progress</a>
+          <a href="/about">About PHP2List</a>
+          <a href="/api-docs">API and feeds</a>
+          <a href="/feed.xml" class="fl-rss"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 11a8 8 0 0 1 8 8M5 5a14 14 0 0 1 14 14"/><circle cx="6" cy="18" r="1.5"/></svg>RSS feed</a>
+        </div>
+        <div class="fl-legal">
+          <a href="/disclaimer">Disclaimer</a>
+          <a href="/privacy">Privacy</a>
+          <a href="/privacy#choices" data-privacy-choices>Privacy choices</a>
+          <a href="/acknowledgements">Acknowledgements</a>
+        </div>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

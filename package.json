@@ -1,0 +1,28 @@
+{
+  "name": "php2list",
+  "version": "1.1.0",
+  "private": true,
+  "description": "Unofficial, searchable view of the NCSC-NL php2shell software list, on Cloudflare Pages",
+  "license": "MIT",
+  "author": "zer0lightning",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zer0lightning/PHP2List.git"
+  },
+  "homepage": "https://php2list.com",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "wrangler pages dev public --port 8788 --compatibility-date 2026-10-01",
+    "build:pages": "python3 tools/build_pages.py",
+    "build:data": "node tools/build-data.mjs upstream data",
+    "test": "node --test tests/worker.test.mjs",
+    "test:browser": "python3 tests/browser/xss_test.py",
+    "deploy": "wrangler pages deploy public --project-name php2list --branch main"
+  },
+  "devDependencies": {
+    "wrangler": "4.152.0"
+  }
+}
