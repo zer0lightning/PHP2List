@@ -462,19 +462,27 @@
   }
 
   // "What changed" strip under the status overview. Numbers and fixed text only.
+  // "What changed" bar under the status overview. Left: counts that filter the table (plain text
+  // when there's nothing to filter). Right: links to all changes, patch progress and the feed.
+  // Only numbers, fixed words and escaped dates are inserted.
+  let latestChange = 0;
   function renderStrip(base){
     const box = $("changesStrip");
-    if (!changesLoaded || !loaded){ box.hidden = true; return; }
+    if (!loaded){ box.hidden = true; return; }
+    box.hidden = false;
+    const links = `<span class="cs-links"><a href="/changes">All changes</a><a href="/charts">Patch progress</a>
+      <a class="cs-rss" href="/feed.xml" title="Follow changes in a feed reader (RSS)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 11a8 8 0 0 1 8 8M5 5a14 14 0 0 1 14 14"/><circle cx="6" cy="18" r="1.5"/></svg>RSS</a></span>`;
+    const icon = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`;
+    if (!changesLoaded){ box.innerHTML = `<span class="cs-main">${icon}<span class="cs-label">Recent changes</span></span>${links}`; return; }
+    const inWatch = state.vendors.length && view === "watch";
     const n24 = base.filter(r => changedIn(r, "24h")).length;
     const nVisit = visitPrev ? base.filter(r => changedIn(r, "visit")).length : 0;
-    const inWatch = state.vendors.length && view === "watch";
-    box.hidden = false;
-    box.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-      <span class="cs-label">${inWatch ? "Changes in your watchlist" : "Recent changes"}</span>
-      <button type="button" class="cs-btn" data-changed="24h" aria-pressed="${state.changed === "24h"}" ${n24 ? "" : "disabled"}><b>${n24.toLocaleString()}</b> in the last 24 hours</button>
-      ${visitPrev ? `<button type="button" class="cs-btn" data-changed="visit" aria-pressed="${state.changed === "visit"}" ${nVisit ? "" : "disabled"} title="Since ${esc(new Date(visitPrev).toLocaleString())}"><b>${nVisit.toLocaleString()}</b> since your last visit</button>` : ""}
-      <a class="cs-all" href="/changes">All changes →</a>
-      <a class="cs-rss" href="/feed.xml" title="Follow changes in a feed reader"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 11a8 8 0 0 1 8 8M5 5a14 14 0 0 1 14 14"/><circle cx="6" cy="18" r="1.5"/></svg>RSS</a>`;
+    const chip = (key, n, text, tip) => n || state.changed === key
+      ? `<button type="button" class="cs-btn" data-changed="${key}" aria-pressed="${state.changed === key}"${tip ? ` title="${esc(tip)}"` : ""}><b>${n.toLocaleString()}</b> ${text}</button>`
+      : "";
+    const parts = [chip("24h", n24, "in the last 24 hours"), visitPrev ? chip("visit", nVisit, "since your last visit", `Since ${new Date(visitPrev).toLocaleString()}`) : ""].filter(Boolean);
+    const quiet = !n24 ? `<span class="cs-quiet">${parts.length ? "" : "None in the last 24 hours"}${latestChange ? `${parts.length ? "" : " · "}last change ${ago(latestChange)}` : ""}</span>` : "";
+    box.innerHTML = `<span class="cs-main">${icon}<span class="cs-label">${inWatch ? "Changes in your watchlist" : "Recent changes"}</span>${parts.join("")}${quiet}</span>${links}`;
   }
   $("changesStrip").addEventListener("click", e => {
     const b = e.target.closest("[data-changed]"); if (!b || b.disabled) return;
@@ -970,6 +978,7 @@
         m.set(e.id, { ts, s1: str(e.s1, 40), s2: str(e.s2, 40), prev: p });
       }
       changeById = m; changesLoaded = true;
+      latestChange = Math.max(0, ...[...m.values()].map(e => e.ts).filter(t => t <= Date.now()));
       if (state.changed) showAll = true;
       render();
     }).catch(() => {});
